@@ -36,3 +36,43 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const loginForm = document.getElementById("login-form");
+    const signupForm = document.getElementById("signup-form");
+
+    if (loginForm) {
+        loginForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            if (!email || !password) {
+                alert("Please fill all fields!");
+                return;
+            }
+
+            alert(`Logging in with ${email}`);
+        });
+    }
+
+    if (signupForm) {
+        signupForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const fullName = document.getElementById("full-name").value;
+            const college = document.getElementById("college").value;
+            const admission = document.getElementById("admission").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            if (!fullName || !college || !admission || !email || !password) {
+                alert("Please fill all fields!");
+                return;
+            }
+
+            alert(`Signing up with ${email}`);
+        });
+    }
+});

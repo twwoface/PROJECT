@@ -3,20 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cantech Login / Sign Up</title>
+    <title>Cantech Login</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h2 id="form-title">Login</h2>
-        <form id="auth-form">
+        <h2>Login</h2>
+        <form id="login-form">
+            <div class="input-group">
+                <label for="email">Gmail</label>
+                <input type="email" id="email" placeholder="Enter Gmail" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter Password" required>
+            </div>
+
+            <button type="submit">Login</button>
+            <p class="toggle-text">
+                Don't have an account? <a href="signup.html">Sign Up</a>
+            </p>
+        </form>
+    </div>
+</body>
+</html>
+
+-----------------------
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cantech Sign Up</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Sign Up</h2>
+        <form id="signup-form">
+            <div class="input-group">
+                <label for="full-name">Full Name</label>
+                <input type="text" id="full-name" placeholder="Enter Full Name" required>
+            </div>
+
             <div class="input-group">
                 <label for="college">Select College</label>
                 <select id="college" required>
                     <option value="">-- Select College --</option>
-                  <option value="college1">KMCT CE</option>
-                  <option value="college2">KMCT CEW </option>
-                  <option value="college3">KMCT ARCH</option>
+                    <option value="college1">College 1</option>
+                    <option value="college2">College 2</option>
+                    <option value="college3">College 3</option>
                 </select>
             </div>
 
@@ -35,13 +74,12 @@
                 <input type="password" id="password" placeholder="Enter Password" required>
             </div>
 
-            <button type="submit" id="submit-btn">Login</button>
+            <button type="submit">Sign Up</button>
             <p class="toggle-text">
-                Don't have an account? <a href="#" id="toggle-form">Sign Up</a>
+                Already have an account? <a href="index.html">Login</a>
             </p>
         </form>
     </div>
-
-    <script src="script.js"></script>
 </body>
 </html>
+
