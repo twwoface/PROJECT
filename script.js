@@ -76,3 +76,19 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+
+
+
+function toggleHostelInput() {
+    var hosteller = document.getElementById("hosteller").value;
+    var hostelNameGroup = document.getElementById("hostel-name-group");
+    var hostelNameInput = document.getElementById("hostel-name");
+
+    if (hosteller === "yes") {
+        hostelNameGroup.style.display = "block"; // Show the field
+        hostelNameInput.setAttribute("required", "true"); // Make it required
+    } else {
+        hostelNameGroup.style.display = "none"; // Hide the field
+        hostelNameInput.removeAttribute("required"); // Remove required attribute
+    }
+}

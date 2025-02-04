@@ -3,83 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cantech Login</title>
+    <title>Login - CanTech</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+    <h1 class="cantech-title">CanTech</h1>
+
     <div class="container">
         <h2>Login</h2>
-        <form id="login-form">
+        <form action="login_process.php" method="POST">
+
             <div class="input-group">
                 <label for="email">Gmail</label>
-                <input type="email" id="email" placeholder="Enter Gmail" required>
+                <input type="email" id="email" name="email" required>
             </div>
 
             <div class="input-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Enter Password" required>
+                <input type="password" id="password" name="password" required>
             </div>
 
             <button type="submit">Login</button>
-            <p class="toggle-text">
-                Don't have an account? <a href="signup.html">Sign Up</a>
-            </p>
+
+            <p class="toggle-text">Don't have an account? <a href="signup.html">Sign Up</a></p>
+
         </form>
     </div>
+
 </body>
 </html>
 
------------------------
-
+--
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cantech Sign Up</title>
+    <title>Sign Up - CanTech</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+    <h1 class="cantech-title">CanTech</h1>
+
     <div class="container">
         <h2>Sign Up</h2>
-        <form id="signup-form">
-            <div class="input-group">
-                <label for="full-name">Full Name</label>
-                <input type="text" id="full-name" placeholder="Enter Full Name" required>
-            </div>
+        <form action="signup_process.php" method="POST">
 
+            <!-- College Selection -->
             <div class="input-group">
                 <label for="college">Select College</label>
-                <select id="college" required>
+                <select id="college" name="college" required>
                     <option value="">-- Select College --</option>
                     <option value="college1">College 1</option>
                     <option value="college2">College 2</option>
-                    <option value="college3">College 3</option>
                 </select>
             </div>
 
+            <!-- Admission Number -->
             <div class="input-group">
-                <label for="admission">Admission No.</label>
-                <input type="text" id="admission" placeholder="Enter Admission No." required>
+                <label for="admission-no">Admission Number</label>
+                <input type="text" id="admission-no" name="admission_no" required>
             </div>
 
+            <!-- Gmail -->
             <div class="input-group">
                 <label for="email">Gmail</label>
-                <input type="email" id="email" placeholder="Enter Gmail" required>
+                <input type="email" id="email" name="email" required>
             </div>
 
+            <!-- Password -->
             <div class="input-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Enter Password" required>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <!-- Hosteller Dropdown -->
+            <div class="input-group">
+                <label for="hosteller">Are you a hosteller?</label>
+                <select id="hosteller" name="hosteller" onchange="toggleHostelInput()" required>
+                    <option value="">-- Select --</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+
+            <!-- Hostel Name (Hidden by Default) -->
+            <div class="input-group" id="hostel-name-group" style="display: none;">
+                <label for="hostel-name">Hostel Name</label>
+                <input type="text" id="hostel-name" name="hostel_name">
             </div>
 
             <button type="submit">Sign Up</button>
-            <p class="toggle-text">
-                Already have an account? <a href="index.html">Login</a>
-            </p>
+
+            <p class="toggle-text">Already have an account? <a href="index.html">Login</a></p>
+
         </form>
     </div>
+
+    <script src="script.js"></script>
+
 </body>
 </html>
-
