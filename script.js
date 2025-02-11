@@ -92,3 +92,5 @@ function toggleHostelInput() {
         hostelNameInput.removeAttribute("required"); // Remove required attribute
     }
 }
+
+
