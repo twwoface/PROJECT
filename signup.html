@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,7 +8,6 @@
         function toggleHostelInput() {
             var hostellerSelect = document.getElementById("hosteller");
             var hostelDropdown = document.getElementById("hostel-name-group");
-            
             if (hostellerSelect.value === "yes") {
                 hostelDropdown.style.display = "block";
             } else {
@@ -17,18 +15,18 @@
                 document.getElementById("hostel-name").value = "";
             }
         }
+        function handleSignup(event) {
+            event.preventDefault();
+            window.location.href = 'dashboard.html';
+        }
     </script>
 </head>
 <body>
-
     <div class="wrapper">
         <h1 class="cantech-title">CANTECH</h1>
-
         <div class="container">
             <h2>SignUp</h2>
-            <form action="signup_process.php" method="POST">
-
-                <!-- College Selection -->
+            <form onsubmit="handleSignup(event)">
                 <div class="input-group">
                     <label for="college">Select College</label>
                     <select id="college" name="college" required>
@@ -37,26 +35,18 @@
                         <option value="college2">KMCT COLLEGE OF ARCH</option>
                     </select>
                 </div>
-    
-                <!-- Admission Number -->
                 <div class="input-group">
                     <label for="admission-no">Admission Number</label>
                     <input type="text" id="admission-no" name="admission_no" required>
                 </div>
-    
-                <!-- Gmail -->
                 <div class="input-group">
                     <label for="email">Gmail</label>
                     <input type="email" id="email" name="email" required>
                 </div>
-    
-                <!-- Password -->
                 <div class="input-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
                 </div>
-    
-                <!-- Hosteller Dropdown -->
                 <div class="input-group">
                     <label for="hosteller">Are you a hosteller?</label>
                     <select id="hosteller" name="hosteller" onchange="toggleHostelInput()" required>
@@ -65,8 +55,6 @@
                         <option value="no">No</option>
                     </select>
                 </div>
-    
-                <!-- Hostel Name Dropdown (Hidden by Default) -->
                 <div class="input-group" id="hostel-name-group" style="display: none;">
                     <label for="hostel-name">Select Hostel</label>
                     <select id="hostel-name" name="hostel_name">
@@ -76,14 +64,10 @@
                         <option value="hostel3">Men's Hostel</option>
                     </select>
                 </div>
-    
                 <button type="submit">Sign Up</button>
-    
                 <p class="toggle-text">Already have an account? <a href="index.html">Login</a></p>
-    
             </form>
         </div>
     </div>
-
 </body>
 </html>
