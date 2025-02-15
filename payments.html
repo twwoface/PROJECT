@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CanTech - Payments</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+    <style>
+        .payment-method:hover {
+            transform: translateY(-2px);
+            transition: transform 0.2s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex min-h-screen">
+        <!-- Sidebar (Same as dashboard) -->
+        <aside class="w-64 bg-white shadow-lg p-4 space-y-4">
+            <div class="text-2xl font-bold text-blue-600 mb-8">CanTech</div>
+            <nav class="space-y-2">
+                <a href="dashboard.html" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                    <i data-feather="home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="payments.html" class="flex items-center space-x-3 bg-blue-100 text-blue-600 p-3 rounded-lg">
+                    <i data-feather="credit-card"></i>
+                    <span>Payments</span>
+                </a>
+                <a href="history.html" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                    <i data-feather="clock"></i>
+                    <span>History</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                    <i data-feather="settings"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <!-- Header -->
+            <header class="flex justify-between items-center mb-8">
+                <h1 class="text-2xl font-bold text-gray-800">Payments</h1>
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 hover:bg-gray-100 rounded-lg">
+                        <i data-feather="bell"></i>
+                    </button>
+                    <button class="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-lg">
+                        <i data-feather="user"></i>
+                        <span>Profile</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Payment Summary -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-4 border rounded-lg">
+                        <h3 class="text-gray-600 mb-2">Current Balance</h3>
+                        <p class="text-2xl font-bold text-red-500">₹1,250</p>
+                    </div>
+                    <div class="p-4 border rounded-lg">
+                        <h3 class="text-gray-600 mb-2">Due Date</h3>
+                        <p class="text-2xl font-bold">March 1, 2025</p>
+                    </div>
+                    <div class="p-4 border rounded-lg">
+                        <h3 class="text-gray-600 mb-2">Payment Status</h3>
+                        <p class="text-2xl font-bold text-yellow-500">Pending</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h2 class="text-xl font-semibold mb-6">Payment Methods</h2>
+                    <div class="space-y-4">
+                        <div class="payment-method p-4 border rounded-lg cursor-pointer hover:border-blue-500">
+                            <div class="flex items-center space-x-3">
+                                <i data-feather="credit-card" class="text-blue-600"></i>
+                                <div>
+                                    <p class="font-medium">Credit/Debit Card</p>
+                                    <p class="text-sm text-gray-500">Pay using any major card</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="payment-method p-4 border rounded-lg cursor-pointer hover:border-blue-500">
+                            <div class="flex items-center space-x-3">
+                                <i data-feather="smartphone" class="text-blue-600"></i>
+                                <div>
+                                    <p class="font-medium">UPI</p>
+                                    <p class="text-sm text-gray-500">Pay using any UPI app</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="payment-method p-4 border rounded-lg cursor-pointer hover:border-blue-500">
+                            <div class="flex items-center space-x-3">
+                                <i data-feather="globe" class="text-blue-600"></i>
+                                <div>
+                                    <p class="font-medium">Net Banking</p>
+                                    <p class="text-sm text-gray-500">Pay using your bank account</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Form -->
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h2 class="text-xl font-semibold mb-6">Make Payment</h2>
+                    <form class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 mb-2">Card Number</label>
+                            <input type="text" class="w-full p-2 border rounded-lg" placeholder="**** **** **** ****">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-gray-700 mb-2">Expiry Date</label>
+                                <input type="text" class="w-full p-2 border rounded-lg" placeholder="MM/YY">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2">CVV</label>
+                                <input type="text" class="w-full p-2 border rounded-lg" placeholder="***">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">Name on Card</label>
+                            <input type="text" class="w-full p-2 border rounded-lg" placeholder="Enter name">
+                        </div>
+                        <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
+                            Pay ₹1,250
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Payment History -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-semibold mb-6">Recent Payments</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="text-left border-b">
+                                <th class="pb-4 pr-4">Date</th>
+                                <th class="pb-4 pr-4">Amount</th>
+                                <th class="pb-4 pr-4">Status</th>
+                                <th class="pb-4">Payment Method</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-600">
+                            <tr class="border-b">
+                                <td class="py-4 pr-4">Feb 1, 2025</td>
+                                <td class="py-4 pr-4">₹1,100</td>
+                                <td class="py-4 pr-4"><span class="text-green-500">Paid</span></td>
+                                <td class="py-4">UPI</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="py-4 pr-4">Jan 1, 2025</td>
+                                <td class="py-4 pr-4">₹950</td>
+                                <td class="py-4 pr-4"><span class="text-green-500">Paid</span></td>
+                                <td class="py-4">Credit Card</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 pr-4">Dec 1, 2024</td>
+                                <td class="py-4 pr-4">₹1,200</td>
+                                <td class="py-4 pr-4"><span class="text-green-500">Paid</span></td>
+                                <td class="py-4">Net Banking</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>
