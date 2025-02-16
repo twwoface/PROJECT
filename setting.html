@@ -1,0 +1,214 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Customize Settings - CanTech</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+        <style>
+            .slider {
+                -webkit-appearance: none;
+                width: 80%;
+                height: 10px;
+                background: #94a3b8;
+                border-radius: 5px;
+                outline: none;
+                opacity: 0.9;
+                transition: opacity 0.2s;
+            }
+            .slider:hover {
+                opacity: 1;
+            }
+            .slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 22px;
+                height: 22px;
+                background: #2563eb;
+                border-radius: 50%;
+                cursor: pointer;
+            }
+            .bold-text {
+                font-weight: bold;
+                font-size: 1.1rem;
+                color: #111827;
+            }
+            .popup {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 20px;
+                border-radius: 10px;
+                display: none;
+                opacity: 0;
+                transition: all 0.5s ease-in-out;
+                font-size: 1.2rem;
+                text-align: center;
+            }
+            .popup.show {
+                display: block;
+                opacity: 1;
+                animation: popScale 0.5s ease-in-out;
+            }
+            @keyframes popScale {
+                0% { transform: translate(-50%, -50%) scale(0.8); }
+                100% { transform: translate(-50%, -50%) scale(1); }
+            }
+
+            /* Modern Checkbox Style */
+            .custom-checkbox {
+                position: relative;
+                width: 24px;
+                height: 24px;
+                appearance: none;
+                border: 2px solid #2563eb;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: all 0.2s ease-in-out;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .custom-checkbox::before {
+                content: "✔";
+                color: white;
+                font-size: 16px;
+                font-weight: bold;
+                display: none;
+            }
+            .custom-checkbox:checked {
+                background-color: #2563eb;
+                border-color: #2563eb;
+            }
+            .custom-checkbox:checked::before {
+                display: block;
+            }
+        </style>
+    </head>
+    <body class="bg-gray-50">
+        <div class="flex min-h-screen">
+            <main class="flex-1 p-8">
+                <h1 class="text-2xl font-bold text-gray-800">Customize Settings</h1>
+
+                <div class="bg-white p-6 rounded-xl shadow-md mt-6">
+                    <h3 class="text-lg font-semibold mb-6">Customize Your Preferences</h3>
+                    <form class="space-y-6">
+                        <!-- Payment Frequency -->
+                        <div>
+                            <label for="paymentFrequency" class="block text-sm font-medium text-gray-700">Payment Frequency</label>
+                            <select id="paymentFrequency" name="paymentFrequency" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg">
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                                <option value="2-monthly">2-Monthly</option>
+                                <option value="3-monthly">3-Monthly</option>
+                            </select>
+                        </div>
+
+                        <!-- Set Total Limit -->
+                        <div>
+                            <label for="limit" class="block text-sm font-medium text-gray-700">Set Total Limit (₹)</label>
+                            <input type="number" id="limit" name="limit" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg" placeholder="Enter limit" min="1" value="1000">
+                        </div>
+
+                        <!-- Toggle Separate Limits -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Separate Limit for Food & Stationery</label>
+                            <label class="inline-flex items-center mt-2">
+                                <input type="checkbox" id="separateLimits" class="custom-checkbox">
+                                <span class="ml-2">Enable Separate Limits</span>
+                            </label>
+                        </div>
+
+                        <!-- Food Limit Slider -->
+                        <div id="foodLimitContainer" class="hidden">
+                            <label for="foodLimit" class="block text-sm font-medium text-gray-700">Food & Beverages Limit (₹)</label>
+                            <input type="range" id="foodLimit" class="slider mt-2" min="0" max="1000" value="500">
+                            <span id="foodLimitValue" class="bold-text">₹500</span>
+                        </div>
+
+                        <!-- Stationery Limit Slider -->
+                        <div id="stationeryLimitContainer" class="hidden">
+                            <label for="stationeryLimit" class="block text-sm font-medium text-gray-700">Stationery Limit (₹)</label>
+                            <input type="range" id="stationeryLimit" class="slider mt-2" min="0" max="1000" value="500">
+                            <span id="stationeryLimitValue" class="bold-text">₹500</span>
+                        </div>
+
+                        <!-- Save Button -->
+                        <div>
+                            <button type="button" id="saveChanges" class="w-full bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+
+
+
+
+
+
+
+
+
+
+        
+
+        <!-- Success Popup -->
+        <div id="popup" class="popup">✅ Changes Saved Successfully!</div>
+
+        <script>
+            feather.replace();
+
+            const limitInput = document.getElementById('limit');
+            const separateLimitsCheckbox = document.getElementById('separateLimits');
+            const foodLimitContainer = document.getElementById('foodLimitContainer');
+            const foodLimitSlider = document.getElementById('foodLimit');
+            const foodLimitValue = document.getElementById('foodLimitValue');
+            const stationeryLimitContainer = document.getElementById('stationeryLimitContainer');
+            const stationeryLimitSlider = document.getElementById('stationeryLimit');
+            const stationeryLimitValue = document.getElementById('stationeryLimitValue');
+            const saveButton = document.getElementById('saveChanges');
+            const popup = document.getElementById('popup');
+
+            function updateSliders(changedSlider) {
+                let totalLimit = parseInt(limitInput.value) || 1000;
+                foodLimitSlider.max = totalLimit;
+                stationeryLimitSlider.max = totalLimit;
+
+                let foodLimit = parseInt(foodLimitSlider.value);
+                let stationeryLimit = parseInt(stationeryLimitSlider.value);
+
+                if (foodLimit + stationeryLimit > totalLimit) {
+                    if (changedSlider === 'food') {
+                        stationeryLimitSlider.value = totalLimit - foodLimit;
+                    } else {
+                        foodLimitSlider.value = totalLimit - stationeryLimit;
+                    }
+                }
+
+                foodLimitValue.textContent = `₹${foodLimitSlider.value}`;
+                stationeryLimitValue.textContent = `₹${stationeryLimitSlider.value}`;
+            }
+
+            function toggleSeparateLimits() {
+                foodLimitContainer.classList.toggle('hidden', !separateLimitsCheckbox.checked);
+                stationeryLimitContainer.classList.toggle('hidden', !separateLimitsCheckbox.checked);
+            }
+
+            foodLimitSlider.addEventListener('input', () => updateSliders('food'));
+            stationeryLimitSlider.addEventListener('input', () => updateSliders('stationery'));
+            separateLimitsCheckbox.addEventListener('change', toggleSeparateLimits);
+
+            saveButton.addEventListener('click', () => {
+                popup.classList.add('show');
+                setTimeout(() => popup.classList.remove('show'), 2000);
+            });
+
+            updateSliders();
+        </script>
+    </body>
+    </html>
