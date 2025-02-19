@@ -42,7 +42,7 @@ def history():
 
 @app.route('/settings')
 def settings():
-    return render_template('settings.html')  # Renders the settings page
+    return render_template('setting.html')  # Renders the settings page
 
 if __name__ == '__main__':
     app.run(debug=True)

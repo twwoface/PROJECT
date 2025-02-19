@@ -22,19 +22,19 @@
         <aside class="w-64 bg-white shadow-lg p-4 space-y-4">
             <div class="text-2xl font-bold text-blue-600 mb-8">CanTech</div>
             <nav class="space-y-2">
-                <a href="dashboard.html" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">    <!-- HREF-->
+                <a href="{{ url_for('dashboard') }}" class="flex items-center space-x-3 bg-blue-100 text-blue-600 p-3 rounded-lg">
                     <i data-feather="home"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="payments.html" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100"> <!-- HREF-->
+                <a href="{{ url_for('payments') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
                     <i data-feather="credit-card"></i>
                     <span>Payments</span>
                 </a>
-                <a href="history.html" class="flex items-center space-x-3 bg-blue-100 text-blue-600 p-3 rounded-lg">    <!-- HREF-->
+                <a href="{{ url_for('history') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
                     <i data-feather="clock"></i>
                     <span>History</span>
                 </a>
-                <a href="setting.html" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                <a href="{{ url_for('settings') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
                     <i data-feather="settings"></i>
                     <span>Settings</span>
                 </a>
