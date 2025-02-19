@@ -22,7 +22,7 @@
                 </ul>
             </nav>
             <div class="auth-buttons">
-                <a href="/login.html" class="btn-login">Login</a>
+                <a href="{{ url_for('login') }}" class="btn-login">Login</a>
                 <a href="/signup.html" class="btn-signup">Sign Up</a>
             </div>
         </div>
@@ -34,7 +34,7 @@
             <div class="hero-content">
                 <h1>Revolutionize Your Canteen Experience</h1>
                 <p>Track, manage, and optimize your canteen expenses with Cantech. Go cashless, stay in control, and enjoy a seamless digital experience.</p>
-                <a href="#" class="btn-get-started">Get Started</a>
+                <a href="{{ url_for('login') }}" class="btn-get-started">Get Started</a>
             </div>
             <div class="hero-image">
                 <img src="cantech-hero.png" alt="Cantech App Preview">
@@ -145,22 +145,21 @@
 
     <!-- JavaScript -->
     <script>
-        // Redirect to Sign Up or Login page
         document.addEventListener("DOMContentLoaded", function () {
-            const signUpButton = document.querySelector(".btn-signup");
             const loginButton = document.querySelector(".btn-login");
-
-            if (signUpButton) {
-                signUpButton.addEventListener("click", function (event) {
-                    event.preventDefault();
-                    window.location.href = "signup.html";
-                });
-            }
+            const signUpButton = document.querySelector(".btn-signup");
 
             if (loginButton) {
                 loginButton.addEventListener("click", function (event) {
                     event.preventDefault();
-                    window.location.href = "login.html";
+                    window.location.href = "/login";
+                });
+            }
+
+            if (signUpButton) {
+                signUpButton.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    window.location.href = "/signup.html";
                 });
             }
         });
