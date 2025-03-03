@@ -1,23 +1,19 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SignUp - CanTech</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Sign Up - CanTech</title>
+    <link rel="stylesheet" href="./static/styles.css">
     <script>
         function toggleHostelInput() {
-            var hostellerSelect = document.getElementById("hosteller");
-            var hostelDropdown = document.getElementById("hostel-name-group");
-            if (hostellerSelect.value === "yes") {
-                hostelDropdown.style.display = "block";
+            var hosteller = document.getElementById('hosteller').value;
+            var hostelNameGroup = document.getElementById('hostel-name-group');
+            if (hosteller === 'yes') {
+                hostelNameGroup.style.display = 'block';
             } else {
-                hostelDropdown.style.display = "none";
-                document.getElementById("hostel-name").value = "";
+                hostelNameGroup.style.display = 'none';
             }
-        }
-        function handleSignup(event) {
-            event.preventDefault();
-            window.location.href = 'dashboard.html';    
         }
     </script>
 </head>
@@ -26,7 +22,7 @@
         <h1 class="cantech-title">CANTECH</h1>
         <div class="container">
             <h2>SignUp</h2>
-            <form onsubmit="handleSignup(event)">
+            <form action="{{ url_for('signup') }}" method="post">
                 <div class="input-group">
                     <label for="college">Select College</label>
                     <select id="college" name="college" required>
@@ -48,6 +44,10 @@
                     <input type="password" id="password" name="password" required>
                 </div>
                 <div class="input-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required>
+                </div>
+                <div class="input-group">
                     <label for="hosteller">Are you a hosteller?</label>
                     <select id="hosteller" name="hosteller" onchange="toggleHostelInput()" required>
                         <option value="">-- Select --</option>
@@ -65,7 +65,7 @@
                     </select>
                 </div>
                 <button type="submit">Sign Up</button>
-                <p class="toggle-text">Already have an account? <a href="index.html">Login</a></p>
+                <p class="toggle-text">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
             </form>
         </div>
     </div>

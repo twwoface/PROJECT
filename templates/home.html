@@ -24,7 +24,7 @@
             </nav>
             <div class="auth-buttons">
                 <a href="{{ url_for('login') }}" class="btn-login">Login</a>
-                <a href="/signup.html" class="btn-signup">Sign Up</a>
+                <a href="{{ url_for('signup') }}" class="btn-signup">Sign Up</a>
             </div>
         </div>
     </header>
@@ -153,14 +153,14 @@
             if (loginButton) {
                 loginButton.addEventListener("click", function (event) {
                     event.preventDefault();
-                    window.location.href = "/login";
+                    window.location.href = "{{ url_for('login') }}";
                 });
             }
 
             if (signUpButton) {
                 signUpButton.addEventListener("click", function (event) {
                     event.preventDefault();
-                    window.location.href = "/signup.html";
+                    window.location.href = "{{ url_for('signup') }}";
                 });
             }
         });

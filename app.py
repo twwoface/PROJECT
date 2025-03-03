@@ -32,6 +32,26 @@ def login():
     # If it's a GET request, just show the login page
     return render_template('login.html')
 
+@app.route('/signup', methods=['POST', 'GET'])
+def signup():
+    if request.method == 'POST':
+        college = request.form.get('college')
+        admission_no = request.form.get('admission_no')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        hosteller = request.form.get('hosteller')
+        hostel_name = request.form.get('hostel_name')
+
+        if password == request.form.get('confirm_password'):
+            # Add user to the dummy users dictionary (for testing)
+            users[email] = password
+            return redirect(url_for('login'))
+        else:
+            return render_template('signup.html', error="Passwords do not match. Try again.")
+    
+    # If it's a GET request, just show the signup page
+    return render_template('signup.html')
+
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')  # Renders the dashboard page
@@ -46,7 +66,7 @@ def history():
 
 @app.route('/settings')
 def settings():
-    return render_template('settings.html')  # Renders the settings page
+    return render_template('setting.html')  # Renders the settings page
 
 if __name__ == '__main__':
     app.run(debug=True)
