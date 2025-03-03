@@ -52,19 +52,19 @@
             <div>
                 <div class="text-2xl font-bold text-blue-600 mb-8">CanTech</div>
                 <nav class="space-y-2">
-                    <a href="dashboard.html" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                    <a href="{{ url_for('dashboard') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
                         <i data-feather="home"></i>
                         <span>Dashboard</span>
                     </a>
-                    <a href="payments.html" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                    <a href="{{ url_for('payments') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
                         <i data-feather="credit-card"></i>
                         <span>Payments</span>
                     </a>
-                    <a href="history.html" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                    <a href="{{ url_for('history') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
                         <i data-feather="clock"></i>
                         <span>History</span>
                     </a>
-                    <a href="setting.html" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                    <a href="{{ url_for('settings') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
                         <i data-feather="settings"></i>
                         <span>Settings</span>
                     </a>
@@ -72,7 +72,7 @@
             </div>
             <!-- Logout Option -->
             <div>
-                <a href="logout.html" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                <a href="{{ url_for('logout') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
                     <i data-feather="log-out"></i>
                     <span>Logout</span>
                 </a>
@@ -126,6 +126,24 @@
                     <div>
                         <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
                         <input type="tel" id="phone" name="phone" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg" placeholder="Enter your phone number" value="+1234567890">
+                    </div>
+
+                    <!-- College Name -->
+                    <div>
+                        <label for="college" class="block text-sm font-medium text-gray-700">College Name</label>
+                        <input type="text" id="college" name="college" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg" placeholder="Enter your college name" value="ABC University">
+                    </div>
+
+                    <!-- Course -->
+                    <div>
+                        <label for="course" class="block text-sm font-medium text-gray-700">Course</label>
+                        <input type="text" id="course" name="course" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg" placeholder="Enter your course" value="Computer Science">
+                    </div>
+
+                    <!-- Year of Study -->
+                    <div>
+                        <label for="year" class="block text-sm font-medium text-gray-700">Year of Study</label>
+                        <input type="text" id="year" name="year" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg" placeholder="Enter your year of study" value="3rd Year">
                     </div>
 
                     <!-- Save Button -->
