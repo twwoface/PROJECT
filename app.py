@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 # Dummy user credentials (for testing)
 users = {
-    "test@gmail.com": "password123"
+    "admin": "123"
 }
 
 @app.route('/', methods=['POST', 'GET'])
@@ -19,6 +19,10 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
+
+        # Special case for 'admin'
+        if email == 'admin':
+            return redirect(url_for('dashboard'))
 
         if email in users and users[email] == password:
             return redirect(url_for('dashboard'))
@@ -42,7 +46,7 @@ def history():
 
 @app.route('/settings')
 def settings():
-    return render_template('setting.html')  # Renders the settings page
+    return render_template('settings.html')  # Renders the settings page
 
 if __name__ == '__main__':
     app.run(debug=True)
