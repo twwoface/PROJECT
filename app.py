@@ -68,5 +68,13 @@ def history():
 def settings():
     return render_template('setting.html')  # Renders the settings page
 
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')  # Renders the profile page
+
+@app.route('/logout')
+def logout():
+    return redirect(url_for('home.html'))  # Redirects to the home page
+
 if __name__ == '__main__':
     app.run(debug=True)
