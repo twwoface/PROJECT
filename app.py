@@ -18,14 +18,18 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
+# List of Colleges for Dropdown
+COLLEGES = ["KMCT COLLEGE OF ENG", "KMCT COLLEGE OF ARCH"]
+
 # User Model
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    college = db.Column(db.String(150), nullable=False)  # Added field
-    admission_number = db.Column(db.String(50), unique=True, nullable=False)  # Added field
+    college = db.Column(db.String(150), nullable=False)
+    admission_number = db.Column(db.String(50), unique=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
-    is_hosteller = db.Column(db.Boolean, nullable=False)  # Added field
+    is_hosteller = db.Column(db.Boolean, nullable=False)
+    hostel_name = db.Column(db.String(150), nullable=True)  # New field for hostel name
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -67,7 +71,12 @@ def signup():
         email = request.form.get('email')
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
-        is_hosteller = request.form.get('is_hosteller') == 'yes'  # Convert to Boolean
+        is_hosteller = request.form.get('is_hosteller') == 'Yes'  # Convert to Boolean
+        hostel_name = request.form.get('hostel_name') if is_hosteller else None  # Get hostel name if applicable
+
+        if college not in COLLEGES:
+            flash("Invalid college selection.", "danger")
+            return redirect(url_for('signup'))
 
         # Check if user already exists
         if User.query.filter_by(email=email).first():
@@ -89,47 +98,48 @@ def signup():
             admission_number=admission_number,
             email=email,
             password=hashed_password,
-            is_hosteller=is_hosteller
+            is_hosteller=is_hosteller,
+            hostel_name=hostel_name  # Save hostel name if applicable
         )
         db.session.add(new_user)
         db.session.commit()
 
-        flash("Account created successfully! Please login.", "success")
+                flash("Account created successfully! Please login.", "success")
         return redirect(url_for('login'))
     
-    return render_template('signup.html')
+    return render_template('signup.html', colleges=COLLEGES)  # Pass the college list
 
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html')  # Renders the dashboard page
+    return render_template('dashboard.html')
 
 @app.route('/payments')
 @login_required
 def payments():
-    return render_template('payments.html')  # Renders the payments page
+    return render_template('payments.html')
 
 @app.route('/history')
 @login_required
 def history():
-    return render_template('history.html')  # Renders the history page
+    return render_template('history.html')
 
 @app.route('/settings')
 @login_required
 def settings():
-    return render_template('setting.html')  # Renders the settings page
+    return render_template('setting.html')
 
 @app.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html')  # Renders the profile page
+    return render_template('profile.html')
 
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     flash("Logged out successfully.", "success")
-    return redirect(url_for('home'))  # Redirects to the home page
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True)
