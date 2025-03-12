@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 
@@ -12,6 +13,7 @@ app.config['SECRET_KEY'] = 'your_secret_key'
 
 # Initialize Extensions
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
@@ -19,8 +21,11 @@ login_manager.login_view = 'login'
 # User Model
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
+    college = db.Column(db.String(150), nullable=False)  # Added field
+    admission_number = db.Column(db.String(50), unique=True, nullable=False)  # Added field
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
+    is_hosteller = db.Column(db.Boolean, nullable=False)  # Added field
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -49,31 +54,48 @@ def login():
             login_user(user)
             return redirect(url_for('dashboard'))
         else:
-            return render_template('login.html', error="Invalid Credentials.")
+            flash("Invalid email or password.", "danger")
+            return render_template('login.html')
     
     return render_template('login.html')
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if request.method == 'POST':
+        college = request.form.get('college')
+        admission_number = request.form.get('admission_number')
         email = request.form.get('email')
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
+        is_hosteller = request.form.get('is_hosteller') == 'yes'  # Convert to Boolean
 
         # Check if user already exists
-        user_exists = User.query.filter_by(email=email).first()
-        if user_exists:
-            return render_template('signup.html', error="Email already exists.")
+        if User.query.filter_by(email=email).first():
+            flash("Email already exists.", "danger")
+            return redirect(url_for('signup'))
 
-        if password == confirm_password:
-            hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-            new_user = User(email=email, password=hashed_password)
-            db.session.add(new_user)
-            db.session.commit()
-            flash("Account created successfully! Please login.", "success")
-            return redirect(url_for('login'))
-        else:
-            return render_template('signup.html', error="Passwords do not match.")
+        if User.query.filter_by(admission_number=admission_number).first():
+            flash("Admission number already exists.", "danger")
+            return redirect(url_for('signup'))
+
+        if password != confirm_password:
+            flash("Passwords do not match.", "danger")
+            return redirect(url_for('signup'))
+
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+        new_user = User(
+            college=college,
+            admission_number=admission_number,
+            email=email,
+            password=hashed_password,
+            is_hosteller=is_hosteller
+        )
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash("Account created successfully! Please login.", "success")
+        return redirect(url_for('login'))
     
     return render_template('signup.html')
 
@@ -106,6 +128,7 @@ def profile():
 @login_required
 def logout():
     logout_user()
+    flash("Logged out successfully.", "success")
     return redirect(url_for('home'))  # Redirects to the home page
 
 if __name__ == '__main__':
