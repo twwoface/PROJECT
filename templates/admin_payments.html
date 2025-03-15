@@ -171,7 +171,17 @@
                     </th>
                 </tr>
             </thead>
-            <!-- ...existing tbody code... -->
+            <tbody>
+    {% for payment in recent_payments %}
+    <tr>
+        <td class="px-4 py-2 border-b">{{ payment[4] }}</td> <!-- Timestamp -->
+        <td class="px-4 py-2 border-b">{{ payment[0] }}</td> <!-- Student ID -->
+        <td class="px-4 py-2 border-b">₹{{ payment[1] }}</td> <!-- Amount -->
+        <td class="px-4 py-2 border-b">{{ payment[2] }}</td> <!-- Category -->
+        <td class="px-4 py-2 border-b">{{ payment[3] }}</td> <!-- Description -->
+    </tr>
+    {% endfor %}
+</tbody>
         </table>
     </div>
 </div>

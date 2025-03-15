@@ -19,14 +19,41 @@ COLLEGES = ["KMCT COLLEGE OF ENG", "KMCT COLLEGE OF ARCH"]
 def init_db():
     with sqlite3.connect("users.db") as conn:
         cursor = conn.cursor()
-        cursor.execute('''CREATE TABLE IF NOT EXISTS users (
+        
+        # Create the new users table with student_id
+        cursor.execute('''CREATE TABLE IF NOT EXISTS users_new (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             college TEXT NOT NULL,
-                            admission_number TEXT UNIQUE NOT NULL,
+                            student_id TEXT UNIQUE NOT NULL,
                             email TEXT UNIQUE NOT NULL,
                             password TEXT NOT NULL,
                             is_hosteller INTEGER NOT NULL,
                             hostel_name TEXT)''')
+        
+        # Check if the old users table exists and contains data
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='users'")
+        if cursor.fetchone():
+            # Attempt to copy data from the old table if it exists
+            try:
+                cursor.execute('''INSERT INTO users_new (id, college, student_id, email, password, is_hosteller, hostel_name)
+                                   SELECT id, college, student_id, email, password, is_hosteller, hostel_name FROM users''')
+            except sqlite3.OperationalError:
+                # Handle cases where the old table does not have the expected columns
+                print("Skipping data migration: old table does not have the expected columns.")
+        
+        # Drop the old table and rename the new table
+        cursor.execute('DROP TABLE IF EXISTS users')
+        cursor.execute('ALTER TABLE users_new RENAME TO users')
+        
+        # Create the payments table if it doesn't exist
+        cursor.execute('''CREATE TABLE IF NOT EXISTS payments (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            student_id TEXT NOT NULL,
+                            amount REAL NOT NULL,
+                            category TEXT NOT NULL,
+                            description TEXT,
+                            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                            FOREIGN KEY (student_id) REFERENCES users (student_id))''')
         conn.commit()
 
 init_db()
@@ -75,21 +102,19 @@ def login():
 def signup():
     if request.method == 'POST':
         college = request.form.get('college')
-        admission_number = request.form.get('admission_no')  # ✅ Fixed
+        student_id = request.form.get('student_id')  # Updated field name
         email = request.form.get('email')
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
-        is_hosteller = request.form.get('hosteller') == 'yes'  # ✅ Fixed
-        hostel_name = request.form.get('hostel_name') if is_hosteller else None  # ✅ Fixed
-
-        print("Received signup data:", college, admission_number, email, is_hosteller, hostel_name)  # Debugging
+        is_hosteller = request.form.get('hosteller') == 'yes'
+        hostel_name = request.form.get('hostel_name') if is_hosteller else None
 
         if college not in COLLEGES:
             flash("Invalid college selection.", "danger")
             return redirect(url_for('signup'))
 
-        if not admission_number:
-            flash("Admission number is required.", "danger")
+        if not student_id:
+            flash("Student ID is required.", "danger")
             return redirect(url_for('signup'))
 
         if password != confirm_password:
@@ -100,11 +125,10 @@ def signup():
 
         with sqlite3.connect("users.db") as conn:
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO users (college, admission_number, email, password, is_hosteller, hostel_name) VALUES (?, ?, ?, ?, ?, ?)",
-                           (college, admission_number, email, hashed_password, is_hosteller, hostel_name))
+            cursor.execute("INSERT INTO users (college, student_id, email, password, is_hosteller, hostel_name) VALUES (?, ?, ?, ?, ?, ?)",
+                           (college, student_id, email, hashed_password, is_hosteller, hostel_name))
             conn.commit()
 
-        print("User inserted into database!")  # Debugging
         flash("Account created successfully! Please login.", "success")
         return redirect(url_for('login'))
 
@@ -113,6 +137,40 @@ def signup():
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
+
+@app.route('/admin-payments', methods=['GET', 'POST'])
+@login_required
+def admin_payments():
+    if request.method == 'POST':
+        student_id = request.form.get('student_id')
+        amount = request.form.get('amount')
+        category = request.form.get('category')
+        description = request.form.get('description')
+        
+        if not student_id or not amount or not category:
+            flash("All fields are required.", "danger")
+            return redirect(url_for('admin_payments'))
+        
+        try:
+            with sqlite3.connect("users.db") as conn:
+                cursor = conn.cursor()
+                cursor.execute('''INSERT INTO payments (student_id, amount, category, description)
+                                  VALUES (?, ?, ?, ?)''', (student_id, amount, category, description))
+                conn.commit()
+                flash("Payment recorded successfully!", "success")
+        except sqlite3.Error as e:
+            flash(f"Error recording payment: {e}", "danger")
+        
+        return redirect(url_for('admin_payments'))
+    
+    recent_payments = []
+    with sqlite3.connect("users.db") as conn:
+        cursor = conn.cursor()
+        cursor.execute('''SELECT student_id, amount, category, description, timestamp
+                          FROM payments ORDER BY timestamp DESC LIMIT 10''')
+        recent_payments = cursor.fetchall()
+    
+    return render_template('admin_payments.html', recent_payments=recent_payments)
 
 @app.route('/profile')
 def profile():
