@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import sqlite3
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 
 app = Flask(__name__)
 
@@ -20,8 +20,8 @@ def init_db():
     with sqlite3.connect("users.db") as conn:
         cursor = conn.cursor()
         
-        # Create the new users table with student_id
-        cursor.execute('''CREATE TABLE IF NOT EXISTS users_new (
+        # Create the users table if it doesn't exist
+        cursor.execute('''CREATE TABLE IF NOT EXISTS users (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             college TEXT NOT NULL,
                             student_id TEXT UNIQUE NOT NULL,
@@ -30,30 +30,18 @@ def init_db():
                             is_hosteller INTEGER NOT NULL,
                             hostel_name TEXT)''')
         
-        # Check if the old users table exists and contains data
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='users'")
-        if cursor.fetchone():
-            # Attempt to copy data from the old table if it exists
-            try:
-                cursor.execute('''INSERT INTO users_new (id, college, student_id, email, password, is_hosteller, hostel_name)
-                                   SELECT id, college, student_id, email, password, is_hosteller, hostel_name FROM users''')
-            except sqlite3.OperationalError:
-                # Handle cases where the old table does not have the expected columns
-                print("Skipping data migration: old table does not have the expected columns.")
-        
-        # Drop the old table and rename the new table
-        cursor.execute('DROP TABLE IF EXISTS users')
-        cursor.execute('ALTER TABLE users_new RENAME TO users')
-        
-        # Create the payments table if it doesn't exist
-        cursor.execute('''CREATE TABLE IF NOT EXISTS payments (
+        # Create the purchases table with a category column
+        cursor.execute('''CREATE TABLE IF NOT EXISTS purchases (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             student_id TEXT NOT NULL,
-                            amount REAL NOT NULL,
-                            category TEXT NOT NULL,
-                            description TEXT,
+                            item_name TEXT NOT NULL,
+                            quantity INTEGER NOT NULL,
+                            price REAL NOT NULL,
+                            total REAL NOT NULL,
+                            category TEXT NOT NULL,  -- New column for category
                             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
                             FOREIGN KEY (student_id) REFERENCES users (student_id))''')
+        
         conn.commit()
 
 init_db()
@@ -66,6 +54,11 @@ class User(UserMixin):
 
 @login_manager.user_loader
 def load_user(user_id):
+    # For admin user
+    if user_id == "0":
+        return User(id=0, email='admin', password='123')
+    
+    # For regular users
     with sqlite3.connect("users.db") as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT id, email, password FROM users WHERE id = ?", (user_id,))
@@ -83,7 +76,15 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        
+
+        # Special case for admin login
+        if email == 'admin' and password == '123':
+            admin_user = User(id=0, email='admin', password='123')  # Create a mock admin user
+            login_user(admin_user)
+            flash("Logged in as admin.", "success")
+            return redirect(url_for('dashboard'))
+
+        # Regular user login
         with sqlite3.connect("users.db") as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT id, password FROM users WHERE email = ?", (email,))
@@ -138,39 +139,58 @@ def signup():
 def dashboard():
     return render_template('dashboard.html')
 
-@app.route('/admin-payments', methods=['GET', 'POST'])
+
+
+@app.route('/admin_panel', methods=['GET', 'POST'])
 @login_required
-def admin_payments():
+def admin_panel():
+    # Check if the logged-in user is the admin
+    if not (current_user.is_authenticated and current_user.email == 'admin'):
+        flash("Access denied. Admins only.", "danger")
+        return redirect(url_for('dashboard'))
+
     if request.method == 'POST':
         student_id = request.form.get('student_id')
-        amount = request.form.get('amount')
-        category = request.form.get('category')
-        description = request.form.get('description')
-        
-        if not student_id or not amount or not category:
-            flash("All fields are required.", "danger")
-            return redirect(url_for('admin_payments'))
-        
+        item_name = request.form.get('item_name')
+        quantity = request.form.get('quantity')
+        price = request.form.get('price')
+        category = request.form.get('category')  # New field for category
+
+        # Validate inputs
         try:
+            quantity = int(quantity)
+            price = float(price)
+            total = quantity * price
+        except ValueError:
+            flash("Invalid quantity or price.", "danger")
+            return redirect(url_for('admin_panel'))
+
+        if not student_id or not item_name or not category or quantity <= 0 or price <= 0:
+            flash("All fields are required and must be valid.", "danger")
+            return redirect(url_for('admin_panel'))
+
+        try:
+            # Insert purchase details into the database
             with sqlite3.connect("users.db") as conn:
                 cursor = conn.cursor()
-                cursor.execute('''INSERT INTO payments (student_id, amount, category, description)
-                                  VALUES (?, ?, ?, ?)''', (student_id, amount, category, description))
+                cursor.execute('''INSERT INTO purchases (student_id, item_name, quantity, price, total, category)
+                                  VALUES (?, ?, ?, ?, ?, ?)''', (student_id, item_name, quantity, price, total, category))
                 conn.commit()
-                flash("Payment recorded successfully!", "success")
+                flash("Purchase recorded successfully!", "success")
         except sqlite3.Error as e:
-            flash(f"Error recording payment: {e}", "danger")
-        
-        return redirect(url_for('admin_payments'))
-    
-    recent_payments = []
+            flash(f"Error recording purchase: {e}", "danger")
+
+        return redirect(url_for('admin_panel'))
+
+    # Fetch recent purchases to display in the table
+    recent_purchases = []
     with sqlite3.connect("users.db") as conn:
         cursor = conn.cursor()
-        cursor.execute('''SELECT student_id, amount, category, description, timestamp
-                          FROM payments ORDER BY timestamp DESC LIMIT 10''')
-        recent_payments = cursor.fetchall()
-    
-    return render_template('admin_payments.html', recent_payments=recent_payments)
+        cursor.execute('''SELECT student_id, item_name, quantity, price, total, category, timestamp
+                          FROM purchases ORDER BY timestamp DESC LIMIT 10''')
+        recent_purchases = cursor.fetchall()
+
+    return render_template('admin_panel.html', recent_purchases=recent_purchases)
 
 @app.route('/profile')
 def profile():
