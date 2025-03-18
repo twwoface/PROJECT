@@ -132,41 +132,7 @@
                 </form>
             </div>
 
-            <!-- Recent Purchases -->
-            <div class="mt-8 bg-white rounded-xl shadow-md p-6 hover-card">
-                <h2 class="text-xl font-semibold mb-4 flex items-center">
-                    <i data-feather="list" class="w-6 h-6 mr-2 text-blue-600"></i>
-                    Recent Purchases
-                </h2>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-gray-100">
-                                <th class="px-4 py-2 border-b">Student ID</th>
-                                <th class="px-4 py-2 border-b">Item Name</th>
-                                <th class="px-4 py-2 border-b">Quantity</th>
-                                <th class="px-4 py-2 border-b">Price</th>
-                                <th class="px-4 py-2 border-b">Total</th>
-                                <th class="px-4 py-2 border-b">Timestamp</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for purchase in recent_purchases %}
-                            <tr>
-                                <td class="px-4 py-2 border-b">{{ purchase[0] }}</td>
-                                <td class="px-4 py-2 border-b">{{ purchase[1] }}</td>
-                                <td class="px-4 py-2 border-b">{{ purchase[2] }}</td>
-                                <td class="px-4 py-2 border-b">₹{{ purchase[3] }}</td>
-                                <td class="px-4 py-2 border-b">₹{{ purchase[4] }}</td>
-                                <td class="px-4 py-2 border-b">{{ purchase[5] }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </main>
-    </div>
+            
 
     <script>
         feather.replace();
