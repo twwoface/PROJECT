@@ -230,7 +230,7 @@ def history():
 def logout():
     logout_user()
     flash("Logged out successfully.", "success")
-    return redirect(url_for('home'))
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)
