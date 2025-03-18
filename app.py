@@ -104,7 +104,7 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
-                flash("Account created successfully! Please login.", "success")
+        flash("Account created successfully! Please login.", "success")
         return redirect(url_for('login'))
     
     return render_template('signup.html', colleges=COLLEGES)  # Pass the college list
