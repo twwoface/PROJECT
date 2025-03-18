@@ -40,20 +40,8 @@
             <!-- Header -->
             <header class="flex justify-between items-center mb-8">
                 <h1 class="text-3xl font-bold text-gray-800">Admin Panel</h1>
-                <div class="flex items-center space-x-4">
-                    {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                            {% for category, message in messages %}
-                                <div class="px-4 py-2 rounded-lg {% if category == 'success' %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %}
-                </div>
-                <p>Logged in as: {{ current_user.email }}</p>
-                <p>Is Authenticated: {{ current_user.is_authenticated }}</p>
-                <p>Email: {{ current_user.email }}</p>
+                
+                
             </header>
 
             <!-- Purchase Entry Form -->
