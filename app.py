@@ -193,6 +193,22 @@ def admin_panel():
 
     return render_template('admin_panel.html', recent_purchases=recent_purchases)
 
+@app.route('/recent_purchases')
+@login_required
+def recent_purchases():
+    if current_user.email != 'admin':
+        flash("Access denied.", "danger")
+        return redirect(url_for('login'))
+
+    # Fetch recent purchases from the database
+    with sqlite3.connect("users.db") as conn:
+        cursor = conn.cursor()
+        cursor.execute('''SELECT student_id, item_name, quantity, price, total, category, timestamp 
+                          FROM purchases ORDER BY timestamp DESC LIMIT 20''')
+        purchases = cursor.fetchall()
+
+    return render_template('recent_purchases.html', purchases=purchases)
+
 @app.route('/profile')
 def profile():
     return render_template('profile.html')
