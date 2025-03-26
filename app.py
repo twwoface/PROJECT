@@ -104,7 +104,7 @@ def login():
 def signup():
     if request.method == 'POST':
         college = request.form.get('college')
-        student_id = request.form.get('student_id')  # Updated field name
+        student_id = request.form.get('student_id')
         email = request.form.get('email')
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
@@ -141,7 +141,42 @@ def signup():
 def dashboard():
     if current_user.email == 'admin':
         return redirect(url_for('admin_panel'))
-    return render_template('dashboard.html')
+
+    # Fetch the logged-in user's student_id
+    student_id = None
+    with sqlite3.connect("users.db") as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT student_id FROM users WHERE id = ?", (current_user.id,))
+        result = cursor.fetchone()
+        if result:
+            student_id = result[0]
+
+    if not student_id:
+        flash("Unable to fetch student ID.", "danger")
+        return redirect(url_for('logout'))
+
+    # Fetch user-specific purchases
+    purchases = []
+    total_spent = 0
+    category_totals = {"food": 0, "stationery": 0}
+
+    with sqlite3.connect("users.db") as conn:
+        cursor = conn.cursor()
+        cursor.execute('''SELECT item_name, quantity, price, total, category, timestamp 
+                          FROM purchases WHERE student_id = ? ORDER BY timestamp DESC''', 
+                       (student_id,))
+        purchases = cursor.fetchall()
+
+        # Calculate total spent and category-wise totals
+        for purchase in purchases:
+            total_spent += purchase[3]
+            if purchase[4] in category_totals:
+                category_totals[purchase[4]] += purchase[3]
+
+    return render_template('dashboard.html', 
+                           purchases=purchases, 
+                           total_spent=total_spent, 
+                           category_totals=category_totals)
 
 @app.route('/admin_panel', methods=['GET', 'POST'])
 @login_required
@@ -155,7 +190,7 @@ def admin_panel():
         item_name = request.form.get('item_name')
         quantity = request.form.get('quantity')
         price = request.form.get('price')
-        category = request.form.get('category')  # New field for category
+        category = request.form.get('category')
 
         # Validate inputs
         try:
@@ -170,16 +205,22 @@ def admin_panel():
             flash("All fields are required and must be valid.", "danger")
             return redirect(url_for('admin_panel'))
 
-        try:
+        # Check if student_id exists in the users table
+        with sqlite3.connect("users.db") as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT 1 FROM users WHERE student_id = ?", (student_id,))
+            if not cursor.fetchone():
+                flash("Invalid student ID. No user found with this ID.", "danger")
+                return redirect(url_for('admin_panel'))
+
             # Insert purchase details into the database
-            with sqlite3.connect("users.db") as conn:
-                cursor = conn.cursor()
+            try:
                 cursor.execute('''INSERT INTO purchases (student_id, item_name, quantity, price, total, category)
                                   VALUES (?, ?, ?, ?, ?, ?)''', (student_id, item_name, quantity, price, total, category))
                 conn.commit()
                 flash("Purchase recorded successfully!", "success")
-        except sqlite3.Error as e:
-            flash(f"Error recording purchase: {e}", "danger")
+            except sqlite3.Error as e:
+                flash(f"Error recording purchase: {e}", "danger")
 
         return redirect(url_for('admin_panel'))
 
@@ -208,6 +249,58 @@ def recent_purchases():
         purchases = cursor.fetchall()
 
     return render_template('recent_purchases.html', purchases=purchases)
+
+@app.route('/edit_purchase/<int:purchase_id>', methods=['GET', 'POST'])
+@login_required
+def edit_purchase(purchase_id):
+    if current_user.email != 'admin':
+        flash("Access denied.", "danger")
+        return redirect(url_for('login'))
+
+    with sqlite3.connect("users.db") as conn:
+        cursor = conn.cursor()
+
+        if request.method == 'POST':
+            # Get updated details from the form
+            item_name = request.form.get('item_name')
+            quantity = request.form.get('quantity')
+            price = request.form.get('price')
+            category = request.form.get('category')
+
+            # Validate inputs
+            try:
+                quantity = int(quantity)
+                price = float(price)
+                total = quantity * price
+            except ValueError:
+                flash("Invalid quantity or price.", "danger")
+                return redirect(url_for('edit_purchase', purchase_id=purchase_id))
+
+            # Update the purchase in the database
+            cursor.execute('''UPDATE purchases 
+                              SET item_name = ?, quantity = ?, price = ?, total = ?, category = ? 
+                              WHERE id = ?''', (item_name, quantity, price, total, category, purchase_id))
+            conn.commit()
+            flash("Purchase updated successfully!", "success")
+            return redirect(url_for('recent_purchases'))
+
+        # Fetch the purchase details to pre-fill the form
+        cursor.execute("SELECT id, item_name, quantity, price, category FROM purchases WHERE id = ?", (purchase_id,))
+        purchase = cursor.fetchone()
+        if not purchase:
+            flash("Purchase not found.", "danger")
+            return redirect(url_for('recent_purchases'))
+
+        # Map the purchase details to a dictionary for the template
+        purchase_data = {
+            "id": purchase[0],
+            "item_name": purchase[1],
+            "quantity": purchase[2],
+            "price": purchase[3],
+            "category": purchase[4]
+        }
+
+    return render_template('edit_purchase.html', purchase=purchase_data)
 
 @app.route('/profile')
 def profile():

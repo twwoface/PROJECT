@@ -85,12 +85,8 @@
                             </div>
                             <h3 class="text-gray-600">Total Spent</h3>
                         </div>
-                        <span class="flex items-center text-red-500">
-                            <i data-feather="arrow-up-right" class="w-4 h-4"></i>
-                            12%
-                        </span>
                     </div>
-                    <p class="text-2xl font-bold">₹1,250</p>
+                    <p class="text-2xl font-bold">₹{{ total_spent }}</p>
                 </div>
 
                 <!-- Food Card -->
@@ -102,12 +98,8 @@
                             </div>
                             <h3 class="text-gray-600">Food & Beverages</h3>
                         </div>
-                        <span class="flex items-center text-green-500">
-                            <i data-feather="arrow-down-right" class="w-4 h-4"></i>
-                            5%
-                        </span>
                     </div>
-                    <p class="text-2xl font-bold">₹850</p>
+                    <p class="text-2xl font-bold">₹{{ category_totals.food }}</p>
                 </div>
 
                 <!-- Stationery Card -->
@@ -119,12 +111,8 @@
                             </div>
                             <h3 class="text-gray-600">Stationery</h3>
                         </div>
-                        <span class="flex items-center text-red-500">
-                            <i data-feather="arrow-up-right" class="w-4 h-4"></i>
-                            8%
-                        </span>
                     </div>
-                    <p class="text-2xl font-bold">₹400</p>
+                    <p class="text-2xl font-bold">₹{{ category_totals.stationery }}</p>
                 </div>
 
                 <!-- Monthly Limit Card -->
@@ -164,46 +152,20 @@
             <div class="bg-white p-6 rounded-xl shadow-md">
                 <h3 class="text-lg font-semibold mb-4">Recent Transactions</h3>
                 <div class="space-y-4">
-                    <!-- Transaction Item -->
+                    {% for purchase in purchases %}
                     <div class="flex items-center justify-between p-4 hover:bg-gray-50 rounded-lg">
                         <div class="flex items-center space-x-4">
                             <div class="p-2 bg-blue-100 rounded-lg">
-                                <i data-feather="coffee" class="text-blue-600"></i>
+                                <i data-feather="box" class="text-blue-600"></i>
                             </div>
                             <div>
-                                <p class="font-medium">Lunch Combo</p>
-                                <p class="text-sm text-gray-500">2 hours ago</p>
+                                <p class="font-medium">{{ purchase[0] }}</p> <!-- Item Name -->
+                                <p class="text-sm text-gray-500">{{ purchase[5] }}</p> <!-- Timestamp -->
                             </div>
                         </div>
-                        <span class="font-semibold">₹120</span>
+                        <span class="font-semibold">₹{{ purchase[3] }}</span> <!-- Total Price -->
                     </div>
-
-                    <!-- More Transaction Items -->
-                    <div class="flex items-center justify-between p-4 hover:bg-gray-50 rounded-lg">
-                        <div class="flex items-center space-x-4">
-                            <div class="p-2 bg-blue-100 rounded-lg">
-                                <i data-feather="book-open" class="text-blue-600"></i>
-                            </div>
-                            <div>
-                                <p class="font-medium">Notebooks</p>
-                                <p class="text-sm text-gray-500">3 hours ago</p>
-                            </div>
-                        </div>
-                        <span class="font-semibold">₹80</span>
-                    </div>
-
-                    <div class="flex items-center justify-between p-4 hover:bg-gray-50 rounded-lg">
-                        <div class="flex items-center space-x-4">
-                            <div class="p-2 bg-blue-100 rounded-lg">
-                                <i data-feather="coffee" class="text-blue-600"></i>
-                            </div>
-                            <div>
-                                <p class="font-medium">Coffee</p>
-                                <p class="text-sm text-gray-500">5 hours ago</p>
-                            </div>
-                        </div>
-                        <span class="font-semibold">₹30</span>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </main>

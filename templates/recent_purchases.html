@@ -48,6 +48,7 @@
                             <th class="px-4 py-2 border-b">Total</th>
                             <th class="px-4 py-2 border-b">Category</th>
                             <th class="px-4 py-2 border-b">Timestamp</th>
+                            <th class="px-4 py-2 border-b">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,6 +61,10 @@
                             <td class="px-4 py-2 border-b">₹{{ purchase[4] }}</td>
                             <td class="px-4 py-2 border-b">{{ purchase[5] }}</td>
                             <td class="px-4 py-2 border-b">{{ purchase[6] }}</td>
+                            <td class="px-4 py-2 border-b">
+                                <a href="{{ url_for('edit_purchase', purchase_id=purchase[0]) }}" 
+                                   class="text-blue-600 hover:underline">Edit</a>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Purchase - CanTech</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-3xl mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold mb-6">Edit Purchase</h1>
+        <form method="POST" action="{{ url_for('edit_purchase', purchase_id=purchase.id) }}">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="item_name" class="block text-sm font-medium text-gray-700">Item Name</label>
+                    <input type="text" name="item_name" id="item_name" value="{{ purchase.item_name }}" required 
+                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                </div>
+                <div>
+                    <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+                    <input type="number" name="quantity" id="quantity" value="{{ purchase.quantity }}" required 
+                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                </div>
+                <div>
+                    <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+                    <input type="number" step="0.01" name="price" id="price" value="{{ purchase.price }}" required 
+                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                </div>
+                <div>
+                    <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+                    <select name="category" id="category" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                        <option value="food" {% if purchase.category == 'food' %}selected{% endif %}>Food</option>
+                        <option value="stationery" {% if purchase.category == 'stationery' %}selected{% endif %}>Stationery</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md">Save Changes</button>
+        </form>
+    </div>
+</body>
+</html>
