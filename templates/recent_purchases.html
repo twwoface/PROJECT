@@ -54,22 +54,73 @@
                     <tbody>
                         {% for purchase in purchases %}
                         <tr>
-                            <td class="px-4 py-2 border-b">{{ purchase[0] }}</td>
                             <td class="px-4 py-2 border-b">{{ purchase[1] }}</td>
                             <td class="px-4 py-2 border-b">{{ purchase[2] }}</td>
-                            <td class="px-4 py-2 border-b">₹{{ purchase[3] }}</td>
+                            <td class="px-4 py-2 border-b">{{ purchase[3] }}</td>
                             <td class="px-4 py-2 border-b">₹{{ purchase[4] }}</td>
-                            <td class="px-4 py-2 border-b">{{ purchase[5] }}</td>
+                            <td class="px-4 py-2 border-b">₹{{ purchase[5] }}</td>
                             <td class="px-4 py-2 border-b">{{ purchase[6] }}</td>
+                            <td class="px-4 py-2 border-b">{{ purchase[7] }}</td>
                             <td class="px-4 py-2 border-b">
-                                <a href="{{ url_for('edit_purchase', purchase_id=purchase[0]) }}" 
-                                   class="text-blue-600 hover:underline">Edit</a>
+                                <a href="?edit_id={{ purchase[0] }}" class="text-blue-600 hover:underline">Edit</a>
                             </td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
+
+            <!-- Edit Purchase Modal -->
+            {% if edit_purchase %}
+            <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <div class="bg-white p-6 rounded-xl shadow-md w-full max-w-2xl mx-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold">Edit Purchase</h2>
+                        <a href="{{ url_for('recent_purchases') }}" class="text-gray-500 hover:text-gray-700">
+                            <i data-feather="x"></i>
+                        </a>
+                    </div>
+                    
+                    <form method="POST" action="{{ url_for('recent_purchases') }}">
+                        <input type="hidden" name="purchase_id" value="{{ edit_purchase[0] }}">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="item_name" class="block text-sm font-medium text-gray-700">Item Name</label>
+                                <input type="text" name="item_name" id="item_name" value="{{ edit_purchase[2] }}" required 
+                                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                            </div>
+                            <div>
+                                <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+                                <input type="number" name="quantity" id="quantity" value="{{ edit_purchase[3] }}" required 
+                                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                            </div>
+                            <div>
+                                <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+                                <input type="number" step="0.01" name="price" id="price" value="{{ edit_purchase[4] }}" required 
+                                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                            </div>
+                            <div>
+                                <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+                                <select name="category" id="category" required 
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                                    <option value="food" {% if edit_purchase[6] == 'food' %}selected{% endif %}>Food</option>
+                                    <option value="stationery" {% if edit_purchase[6] == 'stationery' %}selected{% endif %}>Stationery</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex justify-end space-x-3">
+                            <a href="{{ url_for('recent_purchases') }}" 
+                               class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                                Cancel
+                            </a>
+                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
         </main>
     </div>
 

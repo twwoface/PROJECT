@@ -163,7 +163,7 @@ def dashboard():
     with sqlite3.connect("users.db") as conn:
         cursor = conn.cursor()
         cursor.execute('''SELECT item_name, quantity, price, total, category, timestamp 
-                          FROM purchases WHERE student_id = ? ORDER BY timestamp DESC''', 
+                          FROM purchases WHERE student_id = ? ORDER BY timestamp DESC LIMIT 3''', 
                        (student_id,))
         purchases = cursor.fetchall()
 
@@ -234,73 +234,49 @@ def admin_panel():
 
     return render_template('admin_panel.html', recent_purchases=recent_purchases)
 
-@app.route('/recent_purchases')
+@app.route('/recent_purchases', methods=['GET', 'POST'])
 @login_required
 def recent_purchases():
     if current_user.email != 'admin':
         flash("Access denied.", "danger")
         return redirect(url_for('login'))
 
-    # Fetch recent purchases from the database
-    with sqlite3.connect("users.db") as conn:
-        cursor = conn.cursor()
-        cursor.execute('''SELECT student_id, item_name, quantity, price, total, category, timestamp 
-                          FROM purchases ORDER BY timestamp DESC LIMIT 20''')
-        purchases = cursor.fetchall()
-
-    return render_template('recent_purchases.html', purchases=purchases)
-
-@app.route('/edit_purchase/<int:purchase_id>', methods=['GET', 'POST'])
-@login_required
-def edit_purchase(purchase_id):
-    if current_user.email != 'admin':
-        flash("Access denied.", "danger")
-        return redirect(url_for('login'))
-
     with sqlite3.connect("users.db") as conn:
         cursor = conn.cursor()
 
+        # Handle edit form submission
         if request.method == 'POST':
-            # Get updated details from the form
+            purchase_id = request.form.get('purchase_id')
             item_name = request.form.get('item_name')
-            quantity = request.form.get('quantity')
-            price = request.form.get('price')
+            quantity = int(request.form.get('quantity'))
+            price = float(request.form.get('price'))
             category = request.form.get('category')
+            total = quantity * price
 
-            # Validate inputs
-            try:
-                quantity = int(quantity)
-                price = float(price)
-                total = quantity * price
-            except ValueError:
-                flash("Invalid quantity or price.", "danger")
-                return redirect(url_for('edit_purchase', purchase_id=purchase_id))
-
-            # Update the purchase in the database
             cursor.execute('''UPDATE purchases 
-                              SET item_name = ?, quantity = ?, price = ?, total = ?, category = ? 
-                              WHERE id = ?''', (item_name, quantity, price, total, category, purchase_id))
+                            SET item_name = ?, quantity = ?, price = ?, total = ?, category = ? 
+                            WHERE id = ?''', 
+                            (item_name, quantity, price, total, category, purchase_id))
             conn.commit()
             flash("Purchase updated successfully!", "success")
             return redirect(url_for('recent_purchases'))
 
-        # Fetch the purchase details to pre-fill the form
-        cursor.execute("SELECT id, item_name, quantity, price, category FROM purchases WHERE id = ?", (purchase_id,))
-        purchase = cursor.fetchone()
-        if not purchase:
-            flash("Purchase not found.", "danger")
-            return redirect(url_for('recent_purchases'))
+        # Fetch recent purchases
+        cursor.execute('''SELECT * FROM purchases ORDER BY timestamp DESC LIMIT 20''')
+        purchases = cursor.fetchall()
 
-        # Map the purchase details to a dictionary for the template
-        purchase_data = {
-            "id": purchase[0],
-            "item_name": purchase[1],
-            "quantity": purchase[2],
-            "price": purchase[3],
-            "category": purchase[4]
-        }
+        # If editing, fetch the specific purchase details
+        edit_id = request.args.get('edit_id')
+        edit_purchase = None
+        if edit_id:
+            cursor.execute('SELECT * FROM purchases WHERE id = ?', (edit_id,))
+            edit_purchase = cursor.fetchone()
 
-    return render_template('edit_purchase.html', purchase=purchase_data)
+    return render_template('recent_purchases.html', 
+                         purchases=purchases, 
+                         edit_purchase=edit_purchase)
+
+
 
 @app.route('/profile')
 def profile():
