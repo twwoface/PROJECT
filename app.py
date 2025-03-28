@@ -136,6 +136,7 @@ def signup():
 
     return render_template('signup.html', colleges=COLLEGES)
 
+
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -155,28 +156,56 @@ def dashboard():
         flash("Unable to fetch student ID.", "danger")
         return redirect(url_for('logout'))
 
-    # Fetch user-specific purchases
+    # Fetch user-specific purchases (last 3 transactions)
     purchases = []
-    total_spent = 0
+    recent_total_spent = 0
     category_totals = {"food": 0, "stationery": 0}
+    total_spent = 0  # Total amount spent by the student
+    total_food = 0  # Total spent on food
+    total_stationery = 0  # Total spent on stationery
 
     with sqlite3.connect("users.db") as conn:
         cursor = conn.cursor()
+        
+        # Fetch last 3 purchases
         cursor.execute('''SELECT item_name, quantity, price, total, category, timestamp 
                           FROM purchases WHERE student_id = ? ORDER BY timestamp DESC LIMIT 3''', 
                        (student_id,))
         purchases = cursor.fetchall()
 
-        # Calculate total spent and category-wise totals
+        # Fetch total amount spent by the student
+        cursor.execute("SELECT SUM(total) FROM purchases WHERE student_id = ?", (student_id,))
+        total_result = cursor.fetchone()
+        if total_result and total_result[0]:
+            total_spent = total_result[0]
+        
+        # Fetch total spent on food category
+        cursor.execute("SELECT SUM(total) FROM purchases WHERE student_id = ? AND category = 'food'", (student_id,))
+        food_result = cursor.fetchone()
+        if food_result and food_result[0]:
+            total_food = food_result[0]
+        
+        # Fetch total spent on stationery category
+        cursor.execute("SELECT SUM(total) FROM purchases WHERE student_id = ? AND category = 'stationery'", (student_id,))
+        stationery_result = cursor.fetchone()
+        if stationery_result and stationery_result[0]:
+            total_stationery = stationery_result[0]
+        
+        # Calculate recent total spent and category-wise totals
         for purchase in purchases:
-            total_spent += purchase[3]
+            recent_total_spent += purchase[3]
             if purchase[4] in category_totals:
                 category_totals[purchase[4]] += purchase[3]
 
     return render_template('dashboard.html', 
                            purchases=purchases, 
-                           total_spent=total_spent, 
+                           recent_total_spent=recent_total_spent,
+                           total_spent=total_spent,
+                           total_food=total_food,
+                           total_stationery=total_stationery,
                            category_totals=category_totals)
+
+
 
 @app.route('/admin_panel', methods=['GET', 'POST'])
 @login_required
@@ -286,13 +315,52 @@ def profile():
 def settings():
     return render_template('setting.html')
 
+
+
 @app.route('/payments')
 def payments():
-    return render_template('payments.html')
+    conn = sqlite3.connect('users.db')  # Connect to your database
+    cursor = conn.cursor()
+    
+    # Fetch transactions from the 'purchases' table
+    cursor.execute("SELECT item_name, quantity, price, total, category, timestamp FROM purchases")
+    transactions = cursor.fetchall()
+    
+    conn.close()
+
+    # Calculate total spent
+    total_spent = sum(float(transaction[3]) for transaction in transactions)  # 'total' is at index 3
+
+    return render_template('payments.html', transactions=transactions, total_spent=total_spent)
+
 
 @app.route('/history')
+@login_required
 def history():
-    return render_template('history.html')
+    # Fetch the logged-in user's student_id
+    student_id = None
+    with sqlite3.connect("users.db") as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT student_id FROM users WHERE id = ?", (current_user.id,))
+        result = cursor.fetchone()
+        if result:
+            student_id = result[0]
+
+    if not student_id:
+        flash("Unable to fetch student ID.", "danger")
+        return redirect(url_for('logout'))
+
+    # Fetch all transactions of the logged-in user
+    transactions = []
+    with sqlite3.connect("users.db") as conn:
+        cursor = conn.cursor()
+        cursor.execute('''SELECT item_name, quantity, price, total, category, timestamp 
+                          FROM purchases WHERE student_id = ? ORDER BY timestamp DESC''', 
+                       (student_id,))
+        transactions = cursor.fetchall()
+
+    return render_template('history.html', transactions=transactions)
+
 
 @app.route('/logout')
 @login_required
