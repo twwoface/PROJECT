@@ -2,9 +2,10 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 import sqlite3
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from datetime import datetime
 
 app = Flask(__name__)
-
+#123
 # Database Configuration
 app.config['SECRET_KEY'] = 'your_secret_key'
 
@@ -13,7 +14,12 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
 # List of Colleges for Dropdown
-COLLEGES = ["KMCT COLLEGE OF ENG", "KMCT COLLEGE OF ARCH"]
+COLLEGES = [
+    "KMCT COLLEGE OF ENGINEERING",
+    "KMCT COLLEGE OF ARCHITECTURE",
+    "KMCT COLLEGE OF POLYTECHNIC",
+    "KMCT SCHOOL OF BUSSINESS"
+]
 
 # Create Database and Table
 def init_db():
@@ -66,6 +72,19 @@ def load_user(user_id):
         if user:
             return User(id=user[0], email=user[1], password=user[2])
     return None
+
+@app.template_filter('datetimeformat')
+def datetimeformat(value):
+    try:
+        # Adjust the format to match your database timestamp format
+        dt = datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
+        # Windows-compatible format (remove leading zeros without using minus flag)
+        day = str(int(dt.strftime('%d')))  # Remove leading zero from day
+        hour = str(int(dt.strftime('%I')))  # Remove leading zero from hour
+        return f"{day} {dt.strftime('%B %Y')} {hour}:{dt.strftime('%M %p')}"
+    except (ValueError, TypeError):
+        # Handle cases where the value is None or not in the expected format
+        return value
 
 @app.route('/', methods=['POST', 'GET'])
 def home():

@@ -80,7 +80,7 @@
                                 <td class="p-3">₹{{ transaction[2] }}</td>
                                 <td class="p-3">₹{{ transaction[3] }}</td>
                                 <td class="p-3">{{ transaction[4] }}</td>
-                                <td class="p-3">{{ transaction[5] }}</td>
+                                <td class="p-3">{{ transaction[5] | datetimeformat }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
