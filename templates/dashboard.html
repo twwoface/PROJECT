@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CanTech Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        .notification-dot {
+            width: 8px;
+            height: 8px;
+            background: #EF4444;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .expense-card:hover {
+            transform: translateY(-2px);
+            transition: transform 0.2s ease;
+        }
+        .chart-container {
+            height: 300px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg p-4 space-y-4">
+            <div class="text-2xl font-bold text-blue-600 mb-8">CanTech</div>
+            <nav class="space-y-2">
+                <a href="{{ url_for('dashboard') }}" class="flex items-center space-x-3 bg-blue-100 text-blue-600 p-3 rounded-lg">
+                    <i data-feather="home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{{ url_for('payments') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                    <i data-feather="credit-card"></i>
+                    <span>Payments</span>
+                </a>
+                <a href="{{ url_for('history') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                    <i data-feather="clock"></i>
+                    <span>History</span>
+                </a>
+                {% if current_user.is_authenticated and current_user.email == 'admin' %}
+                <a href="{{ url_for('admin_panel') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                    <i data-feather="shopping-cart"></i>
+                    <span>Admin Panel</span>
+                </a>
+                {% endif %}
+                <a href="{{ url_for('settings') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                    <i data-feather="settings"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <!-- Header -->
+            <header class="flex justify-between items-center mb-8">
+                <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 hover:bg-gray-100 rounded-lg relative">
+                        <i data-feather="bell"></i>
+                        <span class="notification-dot"></span>
+                    </button>
+                    <a href="{{ url_for('profile') }}" class="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-lg">
+                        <i data-feather="user"></i>
+                        <span>Profile</span>
+                    </a>
+                </div>
+            </header>
+
+            <!-- Expense Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Total Spent Card -->
+                <div class="expense-card bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center space-x-2">
+                            <div class="p-2 bg-blue-100 rounded-lg">
+                                <i data-feather="credit-card" class="text-blue-600"></i>
+                            </div>
+                            <h3 class="text-gray-600">Total Spent</h3>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold">₹{{ total_spent }}</p>
+                </div>
+
+                <!-- Food Card -->
+                <div class="expense-card bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center space-x-2">
+                            <div class="p-2 bg-blue-100 rounded-lg">
+                                <i data-feather="coffee" class="text-blue-600"></i>
+                            </div>
+                            <h3 class="text-gray-600">Food & Beverages</h3>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold">₹{{ total_food }}</p>
+                </div>
+
+                <!-- Stationery Card -->
+                <div class="expense-card bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center space-x-2">
+                            <div class="p-2 bg-blue-100 rounded-lg">
+                                <i data-feather="book-open" class="text-blue-600"></i>
+                            </div>
+                            <h3 class="text-gray-600">Stationery</h3>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold">₹{{ total_stationery  }}</p>
+                </div>
+
+                <!-- Monthly Limit Card -->
+                <div class="expense-card bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center space-x-2">
+                            <div class="p-2 bg-blue-100 rounded-lg">
+                                <i data-feather="pie-chart" class="text-blue-600"></i>
+                            </div>
+                            <h3 class="text-gray-600">Monthly Limit</h3>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold">₹2,000</p>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Weekly Expenses Chart -->
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="text-lg font-semibold mb-4">Weekly Expenses</h3>
+                    <div class="chart-container">
+                        <canvas id="weeklyChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Category Pie Chart -->
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="text-lg font-semibold mb-4">Spending by Category</h3>
+                    <div class="chart-container">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-semibold">Last 3 Transactions</h3>
+                    <a href="{{ url_for('history') }}" class="text-blue-600 hover:text-blue-800 text-sm">View All</a>
+                </div>
+                <div class="space-y-4">
+                    {% for purchase in purchases %}
+                    <div class="flex items-center justify-between p-4 bg-gray-50 hover:bg-blue-50 rounded-xl border border-gray-200 transition-all duration-200">
+                        <div class="flex items-center space-x-4">
+                            <div class="p-3 bg-blue-100 rounded-lg">
+                                <i data-feather="shopping-bag" class="text-blue-600 w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-800">{{ purchase[0] }}</p>
+                                <div class="flex items-center space-x-2 mt-1">
+                                    <i data-feather="clock" class="w-4 h-4 text-blue-600"></i>
+                                    <p class="text-sm font-medium text-blue-600">{{ purchase[5] }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="font-bold text-lg text-gray-800">₹{{ purchase[3] }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialize Feather Icons
+        feather.replace();
+
+        // Weekly Expenses Chart
+        const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
+        new Chart(weeklyCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Expenses',
+                    data: [120, 180, 150, 220, 190, 80, 100],
+                    borderColor: '#3B82F6',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // Category Pie Chart
+        const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+        new Chart(categoryCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Food', 'Snacks', 'Beverages', 'Stationery'],
+                datasets: [{
+                    data: [600, 300, 200, 150],
+                    backgroundColor: ['#3B82F6', '#10B981', '#F59E0B', '#6366F1']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    </script>
+</body>
+</html>

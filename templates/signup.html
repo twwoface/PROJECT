@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - CanTech</title>
+    <link rel="stylesheet" href="./static/styles.css">
+    <script>
+        function toggleHostelInput() {
+            var hosteller = document.getElementById('hosteller').value;
+            var hostelNameGroup = document.getElementById('hostel-name-group');
+            if (hosteller === 'yes') {
+                hostelNameGroup.style.display = 'block';
+            } else {
+                hostelNameGroup.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="wrapper">
+        <h1 class="cantech-title">CANTECH</h1>
+        <div class="container">
+            <h2>SignUp</h2>
+            <form action="{{ url_for('signup') }}" method="post">
+                <div class="input-group">
+                    <label for="college">Select College</label>
+                    <select id="college" name="college" required>
+                        <option value="">-- Select College --</option>
+                        <option value="KMCT COLLEGE OF ENG">KMCT COLLEGE OF ENG</option>
+                        <option value="KMCT COLLEGE OF ARCH">KMCT COLLEGE OF ARCH</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="admission-no">Admission Number</label>
+                    <input type="text" id="admission-no" name="admission_no" required>
+                </div>
+                <div class="input-group">
+                    <label for="student-id">Student ID</label>
+                    <input type="text" id="student-id" name="student_id" required>
+                </div>
+                <div class="input-group">
+                    <label for="email">Gmail</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="input-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required>
+                </div>
+                <div class="input-group">
+                    <label for="hosteller">Are you a hosteller?</label>
+                    <select id="hosteller" name="hosteller" onchange="toggleHostelInput()" required>
+                        <option value="">-- Select --</option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="input-group" id="hostel-name-group" style="display: none;">
+                    <label for="hostel-name">Select Hostel</label>
+                    <select id="hostel-name" name="hostel_name">
+                        <option value="">-- Select Hostel --</option>
+                        <option value="Ladie's Hostel 1">Ladie's Hostel 1</option>
+                        <option value="Ladie's Hostel 2">Ladie's Hostel 2</option>
+                        <option value="Men's Hostel">Men's Hostel</option>
+                    </select>
+                </div>
+                <button type="submit">Sign Up</button>
+                <p class="toggle-text">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+            </form>            
+        </div>
+    </div>
+</body>
+</html>
