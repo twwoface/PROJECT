@@ -2,10 +2,16 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 import sqlite3
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+<<<<<<< HEAD
 from datetime import datetime
 
 app = Flask(__name__)
 #123
+=======
+
+app = Flask(__name__)
+
+>>>>>>> 902b92b9fef577ea7177ded434c148964a784267
 # Database Configuration
 app.config['SECRET_KEY'] = 'your_secret_key'
 
@@ -14,12 +20,16 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
 # List of Colleges for Dropdown
+<<<<<<< HEAD
 COLLEGES = [
     "KMCT COLLEGE OF ENGINEERING",
     "KMCT COLLEGE OF ARCHITECTURE",
     "KMCT COLLEGE OF POLYTECHNIC",
     "KMCT SCHOOL OF BUSSINESS"
 ]
+=======
+COLLEGES = ["KMCT COLLEGE OF ENG", "KMCT COLLEGE OF ARCH"]
+>>>>>>> 902b92b9fef577ea7177ded434c148964a784267
 
 # Create Database and Table
 def init_db():
@@ -73,6 +83,7 @@ def load_user(user_id):
             return User(id=user[0], email=user[1], password=user[2])
     return None
 
+<<<<<<< HEAD
 @app.template_filter('datetimeformat')
 def datetimeformat(value):
     try:
@@ -86,6 +97,8 @@ def datetimeformat(value):
         # Handle cases where the value is None or not in the expected format
         return value
 
+=======
+>>>>>>> 902b92b9fef577ea7177ded434c148964a784267
 @app.route('/', methods=['POST', 'GET'])
 def home():
     return render_template('home.html')
