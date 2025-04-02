@@ -324,22 +324,30 @@ def recent_purchases():
             flash("Purchase updated successfully!", "success")
             return redirect(url_for('recent_purchases'))
 
-        # Fetch recent purchases
-        cursor.execute('''SELECT * FROM purchases ORDER BY timestamp DESC LIMIT 20''')
+        # Fetch recent purchases with student names
+        cursor.execute('''
+            SELECT p.*, u.name 
+            FROM purchases p 
+            JOIN users u ON p.student_id = u.student_id 
+            ORDER BY p.timestamp DESC LIMIT 20
+        ''')
         purchases = cursor.fetchall()
 
         # If editing, fetch the specific purchase details
         edit_id = request.args.get('edit_id')
         edit_purchase = None
         if edit_id:
-            cursor.execute('SELECT * FROM purchases WHERE id = ?', (edit_id,))
+            cursor.execute('''
+                SELECT p.*, u.name 
+                FROM purchases p 
+                JOIN users u ON p.student_id = u.student_id 
+                WHERE p.id = ?
+            ''', (edit_id,))
             edit_purchase = cursor.fetchone()
 
     return render_template('recent_purchases.html', 
                          purchases=purchases, 
                          edit_purchase=edit_purchase)
-
-
 
 @app.route('/profile')
 def profile():

@@ -41,6 +41,7 @@
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-gray-100">
+                            <th class="px-4 py-2 border-b">Student Name</th>
                             <th class="px-4 py-2 border-b">Student ID</th>
                             <th class="px-4 py-2 border-b">Item Name</th>
                             <th class="px-4 py-2 border-b">Quantity</th>
@@ -54,6 +55,7 @@
                     <tbody>
                         {% for purchase in purchases %}
                         <tr>
+                            <td class="px-4 py-2 border-b">{{ purchase[8] }}</td>
                             <td class="px-4 py-2 border-b">{{ purchase[1] }}</td>
                             <td class="px-4 py-2 border-b">{{ purchase[2] }}</td>
                             <td class="px-4 py-2 border-b">{{ purchase[3] }}</td>
