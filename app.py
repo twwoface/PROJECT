@@ -34,7 +34,14 @@ def init_db():
                             college TEXT NOT NULL,
                             student_id TEXT UNIQUE NOT NULL,
                             email TEXT UNIQUE NOT NULL,
-                            password TEXT NOT NULL)''')
+                            password TEXT NOT NULL,
+                            status TEXT NOT NULL DEFAULT 'pending')''')
+        
+        # Add status column if it doesn't exist
+        cursor.execute("PRAGMA table_info(users)")
+        columns = [col[1] for col in cursor.fetchall()]
+        if 'status' not in columns:
+            cursor.execute("ALTER TABLE users ADD COLUMN status TEXT NOT NULL DEFAULT 'pending'")
         
         # Create the purchases table with the correct schema
         cursor.execute('''CREATE TABLE IF NOT EXISTS purchases (
@@ -145,8 +152,8 @@ def signup():
 
         with sqlite3.connect("users.db") as conn:
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO users (name, college, student_id, email, password) VALUES (?, ?, ?, ?, ?)",
-                           (name, college, student_id, email, hashed_password))
+            cursor.execute("INSERT INTO users (name, college, student_id, email, password, status) VALUES (?, ?, ?, ?, ?, ?)",
+                           (name, college, student_id, email, hashed_password, 'pending'))
             conn.commit()
 
         flash("Account created successfully! Please login.", "success")
