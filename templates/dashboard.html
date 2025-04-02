@@ -119,18 +119,38 @@
                     </div>
                     <p class="text-2xl font-bold">₹{{ total_stationery  }}</p>
                 </div>
+            </div>
 
-                <!-- Monthly Limit Card -->
+            <!-- Budget Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Total Budget Card -->
                 <div class="expense-card bg-white p-6 rounded-xl shadow-md">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="flex items-center space-x-2">
-                            <div class="p-2 bg-blue-100 rounded-lg">
-                                <i data-feather="pie-chart" class="text-blue-600"></i>
-                            </div>
-                            <h3 class="text-gray-600">Monthly Limit</h3>
-                        </div>
+                    <h3 class="text-gray-600">Total Budget</h3>
+                    <p class="text-2xl font-bold">₹{{ total_budget }}</p>
+                    <p class="text-sm text-gray-500">Spent: ₹{{ total_spent }}</p>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                        <div class="bg-blue-600 h-2 rounded-full" style="width: {{ (total_spent / total_budget) * 100 }}%;"></div>
                     </div>
-                    <p class="text-2xl font-bold">₹2,000</p>
+                </div>
+
+                <!-- Food Budget Card -->
+                <div class="expense-card bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="text-gray-600">Food Budget</h3>
+                    <p class="text-2xl font-bold">₹{{ food_budget }}</p>
+                    <p class="text-sm text-gray-500">Spent: ₹{{ total_food }}</p>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                        <div class="bg-green-600 h-2 rounded-full" style="width: {{ (total_food / food_budget) * 100 }}%;"></div>
+                    </div>
+                </div>
+
+                <!-- Stationery Budget Card -->
+                <div class="expense-card bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="text-gray-600">Stationery Budget</h3>
+                    <p class="text-2xl font-bold">₹{{ stationery_budget }}</p>
+                    <p class="text-sm text-gray-500">Spent: ₹{{ total_stationery }}</p>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                        <div class="bg-yellow-600 h-2 rounded-full" style="width: {{ (total_stationery / stationery_budget) * 100 }}%;"></div>
+                    </div>
                 </div>
             </div>
 
@@ -160,26 +180,37 @@
                     <a href="{{ url_for('history') }}" class="text-blue-600 hover:text-blue-800 text-sm">View All</a>
                 </div>
                 <div class="space-y-4">
-                    {% for purchase in purchases %}
-                    <div class="flex items-center justify-between p-4 bg-gray-50 hover:bg-blue-50 rounded-xl border border-gray-200 transition-all duration-200">
-                        <div class="flex items-center space-x-4">
-                            <div class="p-3 bg-blue-100 rounded-lg">
-                                <i data-feather="shopping-bag" class="text-blue-600 w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <p class="font-medium text-gray-800">{{ purchase[0] }}</p>
-                                <div class="flex items-center space-x-2 mt-1">
-                                    <i data-feather="clock" class="w-4 h-4 text-blue-600"></i>
-                                    <p class="text-sm font-medium text-blue-600">{{ purchase[5] | datetimeformat }}</p>
-
+                    {% if purchases %}
+                        {% for purchase in purchases %}
+                        <div class="flex items-center justify-between p-4 bg-gray-50 hover:bg-blue-50 rounded-xl border border-gray-200 transition-all duration-200">
+                            <div class="flex items-center space-x-4">
+                                <div class="p-3 bg-blue-100 rounded-lg">
+                                    {% if purchase[4] == 'food' %}
+                                        <i data-feather="coffee" class="text-blue-600 w-5 h-5"></i>
+                                    {% else %}
+                                        <i data-feather="book-open" class="text-blue-600 w-5 h-5"></i>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-800">{{ purchase[0] }}</p>
+                                    <div class="flex items-center space-x-2 mt-1">
+                                        <i data-feather="clock" class="w-4 h-4 text-blue-600"></i>
+                                        <p class="text-sm font-medium text-blue-600">{{ purchase[5] | datetimeformat }}</p>
+                                        <span class="text-sm text-gray-500">• Qty: {{ purchase[1] }}</span>
+                                    </div>
                                 </div>
                             </div>
+                            <span class="font-bold text-lg text-gray-800">₹{{ purchase[3] }}</span>
                         </div>
-                        <span class="font-bold text-lg text-gray-800">₹{{ purchase[3] }}</span>
-                    </div>
-                    {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center text-gray-500 py-4">
+                            <p>No recent transactions</p>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
+
         </main>
     </div>
 
