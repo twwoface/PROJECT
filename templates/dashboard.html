@@ -61,7 +61,12 @@
         <main class="flex-1 p-8">
             <!-- Header -->
             <header class="flex justify-between items-center mb-8">
-                <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+                    {% if user_name %}
+                    <p class="text-gray-600 mt-1">Welcome back, <span class="font-semibold text-blue-600">{{ user_name }}</span>!</p>
+                    {% endif %}
+                </div>
                 <div class="flex items-center space-x-4">
                     <button class="p-2 hover:bg-gray-100 rounded-lg relative">
                         <i data-feather="bell"></i>

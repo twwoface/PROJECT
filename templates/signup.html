@@ -5,17 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - CanTech</title>
     <link rel="stylesheet" href="./static/styles.css">
-    <script>
-        function toggleHostelInput() {
-            var hosteller = document.getElementById('hosteller').value;
-            var hostelNameGroup = document.getElementById('hostel-name-group');
-            if (hosteller === 'yes') {
-                hostelNameGroup.style.display = 'block';
-            } else {
-                hostelNameGroup.style.display = 'none';
-            }
-        }
-    </script>
 </head>
 <body>
     <div class="wrapper">
@@ -34,8 +23,8 @@
                     </select>
                 </div>
                 <div class="input-group">
-                    <label for="admission-no">Admission Number</label>
-                    <input type="text" id="admission-no" name="admission_no" required>
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
                 </div>
                 <div class="input-group">
                     <label for="student-id">Student ID</label>
@@ -52,23 +41,6 @@
                 <div class="input-group">
                     <label for="confirm_password">Confirm Password</label>
                     <input type="password" id="confirm_password" name="confirm_password" required>
-                </div>
-                <div class="input-group">
-                    <label for="hosteller">Are you a hosteller?</label>
-                    <select id="hosteller" name="hosteller" onchange="toggleHostelInput()" required>
-                        <option value="">-- Select --</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                    </select>
-                </div>
-                <div class="input-group" id="hostel-name-group" style="display: none;">
-                    <label for="hostel-name">Select Hostel</label>
-                    <select id="hostel-name" name="hostel_name">
-                        <option value="">-- Select Hostel --</option>
-                        <option value="Ladie's Hostel 1">Ladie's Hostel 1</option>
-                        <option value="Ladie's Hostel 2">Ladie's Hostel 2</option>
-                        <option value="Men's Hostel">Men's Hostel</option>
-                    </select>
                 </div>
                 <button type="submit">Sign Up</button>
                 <p class="toggle-text">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>

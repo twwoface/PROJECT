@@ -30,14 +30,13 @@ def init_db():
         # Create the users table if it doesn't exist
         cursor.execute('''CREATE TABLE IF NOT EXISTS users (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            name TEXT NOT NULL,
                             college TEXT NOT NULL,
                             student_id TEXT UNIQUE NOT NULL,
                             email TEXT UNIQUE NOT NULL,
-                            password TEXT NOT NULL,
-                            is_hosteller INTEGER NOT NULL,
-                            hostel_name TEXT)''')
+                            password TEXT NOT NULL)''')
         
-        # Create the purchases table with a category column
+        # Create the purchases table with the correct schema
         cursor.execute('''CREATE TABLE IF NOT EXISTS purchases (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             student_id TEXT NOT NULL,
@@ -45,7 +44,7 @@ def init_db():
                             quantity INTEGER NOT NULL,
                             price REAL NOT NULL,
                             total REAL NOT NULL,
-                            category TEXT NOT NULL,  -- New column for category
+                            category TEXT NOT NULL,
                             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
                             FOREIGN KEY (student_id) REFERENCES users (student_id))''')
         
@@ -123,13 +122,12 @@ def login():
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if request.method == 'POST':
+        name = request.form.get('name')
         college = request.form.get('college')
         student_id = request.form.get('student_id')
         email = request.form.get('email')
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
-        is_hosteller = request.form.get('hosteller') == 'yes'
-        hostel_name = request.form.get('hostel_name') if is_hosteller else None
 
         if college not in COLLEGES:
             flash("Invalid college selection.", "danger")
@@ -147,8 +145,8 @@ def signup():
 
         with sqlite3.connect("users.db") as conn:
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO users (college, student_id, email, password, is_hosteller, hostel_name) VALUES (?, ?, ?, ?, ?, ?)",
-                           (college, student_id, email, hashed_password, is_hosteller, hostel_name))
+            cursor.execute("INSERT INTO users (name, college, student_id, email, password) VALUES (?, ?, ?, ?, ?)",
+                           (name, college, student_id, email, hashed_password))
             conn.commit()
 
         flash("Account created successfully! Please login.", "success")
@@ -163,14 +161,16 @@ def dashboard():
     if current_user.email == 'admin':
         return redirect(url_for('admin_panel'))
 
-    # Fetch the logged-in user's student_id
+    # Fetch the logged-in user's student_id and name
     student_id = None
+    user_name = None
     with sqlite3.connect("users.db") as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT student_id FROM users WHERE id = ?", (current_user.id,))
+        cursor.execute("SELECT student_id, name FROM users WHERE id = ?", (current_user.id,))
         result = cursor.fetchone()
         if result:
             student_id = result[0]
+            user_name = result[1]
 
     if not student_id:
         flash("Unable to fetch student ID.", "danger")
@@ -223,7 +223,8 @@ def dashboard():
                            total_spent=total_spent,
                            total_food=total_food,
                            total_stationery=total_stationery,
-                           category_totals=category_totals)
+                           category_totals=category_totals,
+                           user_name=user_name)  # Add user_name to template context
 
 
 
