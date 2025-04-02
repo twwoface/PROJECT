@@ -60,7 +60,7 @@
                             <td class="px-4 py-2 border-b">₹{{ purchase[4] }}</td>
                             <td class="px-4 py-2 border-b">₹{{ purchase[5] }}</td>
                             <td class="px-4 py-2 border-b">{{ purchase[6] }}</td>
-                            <td class="px-4 py-2 border-b">{{ purchase[7] }}</td>
+                            <td class="px-4 py-2 border-b">{{ purchase[7] | datetimeformat }}</td>
                             <td class="px-4 py-2 border-b">
                                 <a href="?edit_id={{ purchase[0] }}" class="text-blue-600 hover:underline">Edit</a>
                             </td>

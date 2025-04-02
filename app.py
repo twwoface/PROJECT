@@ -237,25 +237,8 @@ def admin_panel():
 
     if request.method == 'POST':
         student_id = request.form.get('student_id')
-        item_name = request.form.get('item_name')
-        quantity = request.form.get('quantity')
-        price = request.form.get('price')
-        category = request.form.get('category')
-
-        # Validate inputs
-        try:
-            quantity = int(quantity)
-            price = float(price)
-            total = quantity * price
-        except ValueError:
-            flash("Invalid quantity or price.", "danger")
-            return redirect(url_for('admin_panel'))
-
-        if not student_id or not item_name or not category or quantity <= 0 or price <= 0:
-            flash("All fields are required and must be valid.", "danger")
-            return redirect(url_for('admin_panel'))
-
-        # Check if student_id exists in the users table
+        
+        # Check if student_id exists
         with sqlite3.connect("users.db") as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT 1 FROM users WHERE student_id = ?", (student_id,))
@@ -263,14 +246,37 @@ def admin_panel():
                 flash("Invalid student ID. No user found with this ID.", "danger")
                 return redirect(url_for('admin_panel'))
 
-            # Insert purchase details into the database
+            # Process multiple items
+            items = []
+            i = 0
+            while f'items[{i}][item_name]' in request.form:
+                item = {
+                    'item_name': request.form[f'items[{i}][item_name]'],
+                    'quantity': request.form[f'items[{i}][quantity]'],
+                    'price': request.form[f'items[{i}][price]'],
+                    'category': request.form[f'items[{i}][category]']
+                }
+                items.append(item)
+                i += 1
+
             try:
-                cursor.execute('''INSERT INTO purchases (student_id, item_name, quantity, price, total, category)
-                                  VALUES (?, ?, ?, ?, ?, ?)''', (student_id, item_name, quantity, price, total, category))
+                # Insert all items for the student
+                for item in items:
+                    quantity = int(item['quantity'])
+                    price = float(item['price'])
+                    total = quantity * price
+                    
+                    cursor.execute('''INSERT INTO purchases 
+                                    (student_id, item_name, quantity, price, total, category)
+                                    VALUES (?, ?, ?, ?, ?, ?)''', 
+                                    (student_id, item['item_name'], quantity, 
+                                     price, total, item['category']))
+                
                 conn.commit()
-                flash("Purchase recorded successfully!", "success")
-            except sqlite3.Error as e:
-                flash(f"Error recording purchase: {e}", "danger")
+                flash(f"Successfully recorded {len(items)} items for student {student_id}!", "success")
+            except (ValueError, sqlite3.Error) as e:
+                flash(f"Error recording purchases: {e}", "danger")
+                return redirect(url_for('admin_panel'))
 
         return redirect(url_for('admin_panel'))
 
