@@ -108,7 +108,7 @@
             <!-- Summary Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 <!-- Unified Budget Card -->
-                <div class="expense-card bg-white p-6 rounded-xl col-span-1 md:col-span-2 lg:col-span-1">
+                <div class="expense-card bg-white p-6 rounded-xl">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4">Total Budget Overview</h3>
                     <div class="space-y-4">
                         <div>
@@ -124,27 +124,36 @@
                     </div>
                 </div>
 
-                <!-- Category Spending Cards -->
-                <div class="grid grid-cols-1 gap-4">
-                    <!-- Food Budget -->
-                    <div class="expense-card bg-white p-4 rounded-xl">
-                        <div class="flex justify-between items-center mb-2">
-                            <h3 class="font-medium text-gray-700">Food & Beverages</h3>
-                            <span class="text-sm font-semibold text-green-600">₹{{ total_food }}</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                            <div class="bg-green-500 h-2 rounded-full" style="width: {{ (total_food / food_budget) * 100 }}%;"></div>
+                <!-- Food Budget Card -->
+                <div class="expense-card bg-white p-6 rounded-xl">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Food & Beverages</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-600">Budget</span>
+                                <span class="text-green-600 font-semibold">₹{{ total_food }}</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: {{ (total_food / food_budget) * 100 }}%;"></div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">₹{{ total_food }} spent of ₹{{ food_budget }}</p>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Stationery Budget -->
-                    <div class="expense-card bg-white p-4 rounded-xl">
-                        <div class="flex justify-between items-center mb-2">
-                            <h3 class="font-medium text-gray-700">Stationery</h3>
-                            <span class="text-sm font-semibold text-yellow-600">₹{{ total_stationery }}</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                            <div class="bg-yellow-500 h-2 rounded-full" style="width: {{ (total_stationery / stationery_budget) * 100 }}%;"></div>
+                <!-- Stationery Budget Card -->
+                <div class="expense-card bg-white p-6 rounded-xl">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Stationery</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-600">Budget</span>
+                                <span class="text-yellow-600 font-semibold">₹{{ total_stationery }}</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-yellow-500 h-2 rounded-full" style="width: {{ (total_stationery / stationery_budget) * 100 }}%;"></div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">₹{{ total_stationery }} spent of ₹{{ stationery_budget }}</p>
                         </div>
                     </div>
                 </div>
