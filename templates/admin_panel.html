@@ -7,14 +7,63 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
     <style>
-        .form-input:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px #3b82f6;
+        .form-input, input, select {
+            background-color: #f9fafb;
+            border: 1px solid #d1d5db;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            color: #374151;
+            border-radius: 0.375rem;
         }
+
+        .form-input:focus, input:focus, select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+        }
+
+        .hover-card {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+        }
+
         .hover-card:hover {
-            transform: translateY(-5px);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-secondary {
+            background-color: #f3f4f6;
+            color: #374151;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e5e7eb;
+        }
+
+        .item-row {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            padding: 1rem;
+            border-radius: 0.5rem;
         }
     </style>
 </head>
@@ -57,32 +106,32 @@
                     <div class="mb-6">
                         <label for="student_id" class="block text-sm font-medium text-gray-700">Student ID</label>
                         <input type="text" name="student_id" id="student_id" required 
-                               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                               class="form-input w-full">
                     </div>
 
                     <!-- Items Container -->
-                    <div id="itemsContainer">
+                    <div id="itemsContainer" class="space-y-4">
                         <!-- Initial Item Row -->
-                        <div class="item-row grid grid-cols-1 md:grid-cols-4 gap-4 mb-4 p-4 bg-gray-50 rounded-lg">
+                        <div class="item-row">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Item Name</label>
                                 <input type="text" name="items[0][item_name]" required 
-                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                       class="form-input w-full">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Quantity</label>
                                 <input type="number" name="items[0][quantity]" required 
-                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                       class="form-input w-full">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Price</label>
                                 <input type="number" step="0.01" name="items[0][price]" required 
-                                       class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                       class="form-input w-full">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Category</label>
                                 <select name="items[0][category]" required 
-                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                        class="form-input w-full">
                                     <option value="food">Food</option>
                                     <option value="stationery">Stationery</option>
                                 </select>
@@ -91,13 +140,13 @@
                     </div>
 
                     <!-- Add More Items Button -->
-                    <div class="flex justify-between items-center mt-4">
+                    <div class="flex justify-between items-center mt-6">
                         <button type="button" onclick="addItemRow()" 
-                                class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200">
+                                class="btn-secondary">
                             <i data-feather="plus" class="w-4 h-4 inline mr-1"></i>
                             Add Another Item
                         </button>
-                        <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                        <button type="submit" class="btn-primary">
                             Save All Items
                         </button>
                     </div>
@@ -112,28 +161,28 @@
         function addItemRow() {
             const container = document.getElementById('itemsContainer');
             const newRow = document.createElement('div');
-            newRow.className = 'item-row grid grid-cols-1 md:grid-cols-4 gap-4 mb-4 p-4 bg-gray-50 rounded-lg';
+            newRow.className = 'item-row';
             
             newRow.innerHTML = `
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Item Name</label>
                     <input type="text" name="items[${itemCount}][item_name]" required 
-                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                           class="form-input w-full">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Quantity</label>
                     <input type="number" name="items[${itemCount}][quantity]" required 
-                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                           class="form-input w-full">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Price</label>
                     <input type="number" step="0.01" name="items[${itemCount}][price]" required 
-                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                           class="form-input w-full">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Category</label>
                     <select name="items[${itemCount}][category]" required 
-                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                            class="form-input w-full">
                         <option value="food">Food</option>
                         <option value="stationery">Stationery</option>
                     </select>

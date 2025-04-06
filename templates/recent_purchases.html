@@ -1,4 +1,3 @@
-<!-- filepath: c:\Users\KMCTCE\Desktop\project\PROJECT\templates\recent_purchases.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +6,51 @@
     <title>Recent Purchases - CanTech</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+    <style>
+        .table-container {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .table-header {
+            background-color: #f3f4f6;
+            color: #374151;
+            font-weight: 600;
+            text-align: left;
+            padding: 0.75rem;
+        }
+
+        .table-cell {
+            padding: 0.75rem;
+            color: #4b5563;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .table-row:hover {
+            background-color: #f9fafb;
+        }
+
+        .btn-edit {
+            color: #3b82f6;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .btn-edit:hover {
+            color: #2563eb;
+        }
+
+        .modal {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            padding: 2rem;
+        }
+    </style>
 </head>
 <body class="bg-gray-50">
     <div class="flex min-h-screen">
@@ -36,35 +80,35 @@
             </header>
 
             <!-- Purchases Table -->
-            <div class="bg-white rounded-xl shadow-md p-6">
+            <div class="table-container">
                 <h2 class="text-xl font-semibold mb-4">Recent Purchases</h2>
-                <table class="w-full text-left border-collapse">
+                <table class="w-full">
                     <thead>
-                        <tr class="bg-gray-100">
-                            <th class="px-4 py-2 border-b">Student Name</th>
-                            <th class="px-4 py-2 border-b">Student ID</th>
-                            <th class="px-4 py-2 border-b">Item Name</th>
-                            <th class="px-4 py-2 border-b">Quantity</th>
-                            <th class="px-4 py-2 border-b">Price</th>
-                            <th class="px-4 py-2 border-b">Total</th>
-                            <th class="px-4 py-2 border-b">Category</th>
-                            <th class="px-4 py-2 border-b">Timestamp</th>
-                            <th class="px-4 py-2 border-b">Actions</th>
+                        <tr>
+                            <th class="table-header">Student Name</th>
+                            <th class="table-header">Student ID</th>
+                            <th class="table-header">Item Name</th>
+                            <th class="table-header">Quantity</th>
+                            <th class="table-header">Price</th>
+                            <th class="table-header">Total</th>
+                            <th class="table-header">Category</th>
+                            <th class="table-header">Timestamp</th>
+                            <th class="table-header">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for purchase in purchases %}
-                        <tr>
-                            <td class="px-4 py-2 border-b">{{ purchase[8] }}</td>
-                            <td class="px-4 py-2 border-b">{{ purchase[1] }}</td>
-                            <td class="px-4 py-2 border-b">{{ purchase[2] }}</td>
-                            <td class="px-4 py-2 border-b">{{ purchase[3] }}</td>
-                            <td class="px-4 py-2 border-b">₹{{ purchase[4] }}</td>
-                            <td class="px-4 py-2 border-b">₹{{ purchase[5] }}</td>
-                            <td class="px-4 py-2 border-b">{{ purchase[6] }}</td>
-                            <td class="px-4 py-2 border-b">{{ purchase[7] | datetimeformat }}</td>
-                            <td class="px-4 py-2 border-b">
-                                <a href="?edit_id={{ purchase[0] }}" class="text-blue-600 hover:underline">Edit</a>
+                        <tr class="table-row">
+                            <td class="table-cell">{{ purchase[8] }}</td>
+                            <td class="table-cell">{{ purchase[1] }}</td>
+                            <td class="table-cell">{{ purchase[2] }}</td>
+                            <td class="table-cell">{{ purchase[3] }}</td>
+                            <td class="table-cell">₹{{ purchase[4] }}</td>
+                            <td class="table-cell">₹{{ purchase[5] }}</td>
+                            <td class="table-cell">{{ purchase[6] }}</td>
+                            <td class="table-cell">{{ purchase[7] | datetimeformat }}</td>
+                            <td class="table-cell">
+                                <a href="?edit_id={{ purchase[0] }}" class="btn-edit">Edit</a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -75,7 +119,7 @@
             <!-- Edit Purchase Modal -->
             {% if edit_purchase %}
             <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                <div class="bg-white p-6 rounded-xl shadow-md w-full max-w-2xl mx-4">
+                <div class="modal">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-xl font-semibold">Edit Purchase</h2>
                         <a href="{{ url_for('recent_purchases') }}" class="text-gray-500 hover:text-gray-700">
