@@ -1,13 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CanTech Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <style>
+        :root {
+            --primary: #7C3AED;           /* Vibrant purple */
+            --primary-light: #A78BFA;     /* Light purple */
+            --surface: #1A1B1E;           /* Dark surface */
+            --surface-light: #2A2B2F;     /* Lighter surface */
+            --background: #111112;         /* Deep dark background */
+            --text-primary: #FFFFFF;       /* White text */
+            --text-secondary: #A1A1AA;     /* Gray text */
+            --accent: #F43F5E;            /* Pink accent */
+            --success: #10B981;           /* Green */
+            --warning: #FBBF24;           /* Yellow */
+            --gradient: linear-gradient(135deg, #7C3AED, #F43F5E);
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h1, h2, h3, .brand-text {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
         .notification-dot {
             width: 8px;
             height: 8px;
@@ -17,39 +44,88 @@
             top: 0;
             right: 0;
         }
+
         .expense-card {
-            transition: all 0.3s ease;
-            border: 1px solid rgba(229, 231, 235, 0.5);
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         }
+
         .expense-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
-            border-color: #3B82F6;
+            border-color: var(--primary-light);
+            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.2);
         }
+
         .chart-container {
-            height: 300px;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            height: 400px; /* Increased from 300px */
+            padding: 1.5rem;
             position: relative;
         }
-        .progress-ring {
-            transition: all 0.3s ease;
-        }
-        .transaction-item {
-            transition: all 0.2s ease;
-            border-left: 4px solid transparent;
-        }
-        .transaction-item:hover {
-            border-left-color: #3B82F6;
-            background-color: #F8FAFC;
-        }
+
         .sidebar-link {
-            transition: all 0.2s ease;
-            border-radius: 8px;
-            margin-bottom: 4px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.25rem;
+            border-left: 3px solid transparent;
         }
+
         .sidebar-link:hover {
-            background-color: #EFF6FF;
-            color: #3B82F6;
+            background: var(--surface-light);
+            color: var(--primary-light);
+            border-left-color: var(--primary-light);
         }
+
+        .sidebar-link.active {
+            background: rgba(124, 58, 237, 0.15);
+            color: var(--primary-light);
+            border-left-color: var(--primary-light);
+        }
+
+        .sidebar-link i {
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+
+        .sidebar-link:hover i, 
+        .sidebar-link.active i {
+            color: var(--primary-light);
+        }
+
+        aside, header, .transaction-item {
+            background-color: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .text-gray-800 { color: var(--text-primary) !important; }
+        .text-gray-600 { color: var(--text-secondary) !important; }
+        .bg-white { background-color: var(--surface) !important; }
+        .bg-gray-50 { background-color: var(--background) !important; }
+        .border-gray-100 { border-color: rgba(75, 85, 99, 0.2) !important; }
+
+        .transaction-item:hover {
+            background: var(--surface-light);
+            border-left: 3px solid var(--primary);
+        }
+
+        /* Progress bars */
+        .progress-bg {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .progress-primary { background: var(--gradient); }
+        .progress-success { background: var(--success); }
+        .progress-warning { background: var(--warning); }
+
+        /* Text colors */
+        .text-brand { color: var(--primary-light); }
+        .text-accent { color: var(--accent); }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -58,25 +134,25 @@
         <aside class="w-64 bg-white shadow-lg p-6 space-y-6">
             <div class="text-2xl font-bold text-blue-600">CanTech</div>
             <nav class="space-y-1">
-                <a href="{{ url_for('dashboard') }}" class="flex items-center space-x-3 bg-blue-100 text-blue-600 p-3 rounded-lg">
+                <a href="{{ url_for('dashboard') }}" class="sidebar-link active flex items-center space-x-3 p-3">
                     <i data-feather="home"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="{{ url_for('payments') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                <a href="{{ url_for('payments') }}" class="sidebar-link flex items-center space-x-3 p-3">
                     <i data-feather="credit-card"></i>
                     <span>Payments</span>
                 </a>
-                <a href="{{ url_for('history') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                <a href="{{ url_for('history') }}" class="sidebar-link flex items-center space-x-3 p-3">
                     <i data-feather="clock"></i>
                     <span>History</span>
                 </a>
                 {% if current_user.is_authenticated and current_user.email == 'admin' %}
-                <a href="{{ url_for('admin_panel') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                <a href="{{ url_for('admin_panel') }}" class="sidebar-link flex items-center space-x-3 p-3">
                     <i data-feather="shopping-cart"></i>
                     <span>Admin Panel</span>
                 </a>
                 {% endif %}
-                <a href="{{ url_for('settings') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                <a href="{{ url_for('settings') }}" class="sidebar-link flex items-center space-x-3 p-3">
                     <i data-feather="settings"></i>
                     <span>Settings</span>
                 </a>
@@ -94,11 +170,11 @@
                     {% endif %}
                 </div>
                 <div class="flex items-center space-x-4">
-                    <button class="p-2 hover:bg-gray-100 rounded-lg relative">
+                    <button class="p-2 hover:bg-surface-light rounded-lg transition-all duration-300">
                         <i data-feather="bell"></i>
                         <span class="notification-dot"></span>
                     </button>
-                    <a href="{{ url_for('profile') }}" class="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-lg">
+                    <a href="{{ url_for('profile') }}" class="flex items-center space-x-2 p-2 hover:bg-surface-light rounded-lg transition-all duration-300">
                         <i data-feather="user"></i>
                         <span>Profile</span>
                     </a>
@@ -116,8 +192,8 @@
                                 <span class="text-gray-600">Total Budget</span>
                                 <span class="text-blue-600 font-semibold">₹{{ total_budget }}</span>
                             </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-blue-600 h-2 rounded-full" style="width: {{ (total_spent / total_budget) * 100 }}%;"></div>
+                            <div class="w-full progress-bg rounded-full h-2">
+                                <div class="progress-primary h-2 rounded-full" style="width: {{ (total_spent / total_budget) * 100 }}%;"></div>
                             </div>
                             <p class="text-sm text-gray-500 mt-1">₹{{ total_spent }} spent of ₹{{ total_budget }}</p>
                         </div>
@@ -133,8 +209,8 @@
                                 <span class="text-gray-600">Budget</span>
                                 <span class="text-green-600 font-semibold">₹{{ total_food }}</span>
                             </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-green-500 h-2 rounded-full" style="width: {{ (total_food / food_budget) * 100 }}%;"></div>
+                            <div class="w-full progress-bg rounded-full h-2">
+                                <div class="progress-success h-2 rounded-full" style="width: {{ (total_food / food_budget) * 100 }}%;"></div>
                             </div>
                             <p class="text-sm text-gray-500 mt-1">₹{{ total_food }} spent of ₹{{ food_budget }}</p>
                         </div>
@@ -150,8 +226,8 @@
                                 <span class="text-gray-600">Budget</span>
                                 <span class="text-yellow-600 font-semibold">₹{{ total_stationery }}</span>
                             </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-yellow-500 h-2 rounded-full" style="width: {{ (total_stationery / stationery_budget) * 100 }}%;"></div>
+                            <div class="w-full progress-bg rounded-full h-2">
+                                <div class="progress-warning h-2 rounded-full" style="width: {{ (total_stationery / stationery_budget) * 100 }}%;"></div>
                             </div>
                             <p class="text-sm text-gray-500 mt-1">₹{{ total_stationery }} spent of ₹{{ stationery_budget }}</p>
                         </div>
@@ -228,17 +304,56 @@
                 datasets: [{
                     label: 'Expenses',
                     data: [120, 180, 150, 220, 190, 80, 100],
-                    borderColor: '#3B82F6',
-                    tension: 0.4
+                    borderColor: '#8B5CF6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.15)',
+                    tension: 0.4,
+                    fill: true,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#C4B5FD',
+                    pointBorderColor: '#8B5CF6',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#8B5CF6',
+                    pointRadius: 4,
+                    pointHoverRadius: 6
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { 
+                            color: '#FFFFFF',
+                            font: {
+                                size: 14
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        ticks: { 
+                            color: '#FFFFFF',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    y: {
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        ticks: { 
+                            color: '#FFFFFF',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    }
+                }
             }
         });
 
-        // Category Pie Chart
+        // Category Pie Chart with vibrant colors
         const categoryCtx = document.getElementById('categoryChart').getContext('2d');
         new Chart(categoryCtx, {
             type: 'pie',
@@ -246,12 +361,32 @@
                 labels: ['Food', 'Snacks', 'Beverages', 'Stationery'],
                 datasets: [{
                     data: [600, 300, 200, 150],
-                    backgroundColor: ['#3B82F6', '#10B981', '#F59E0B', '#6366F1']
+                    backgroundColor: [
+                        'rgba(139, 92, 246, 0.9)',  // Vivid Purple
+                        'rgba(236, 72, 153, 0.9)',  // Vivid Pink
+                        'rgba(59, 130, 246, 0.9)',  // Vivid Blue
+                        'rgba(16, 185, 129, 0.9)'   // Vivid Green
+                    ],
+                    borderColor: 'rgba(30, 41, 59, 0.8)',
+                    borderWidth: 3,
+                    hoverOffset: 4
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { 
+                            color: '#FFFFFF',
+                            font: {
+                                size: 14
+                            },
+                            padding: 20
+                        }
+                    }
+                }
             }
         });
     </script>
