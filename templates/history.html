@@ -15,12 +15,14 @@
             --surface: #1A1B1E;           
             --surface-light: #2A2B2F;     
             --background: #111112;         
-            --text-primary: #FFFFFF;       
-            --text-secondary: #A1A1AA;     
+            --text-primary: #E2E8F0;       
+            --text-secondary: #CBD5E1;     
             --accent: #F43F5E;            
             --success: #10B981;           
             --warning: #FBBF24;           
             --gradient: linear-gradient(135deg, #7C3AED, #F43F5E);
+            --table-header-bg: #2D3748;   
+            --table-row-hover: #2D3748;   
         }
 
         /* Copy all base styles from dashboard.html */
@@ -129,12 +131,10 @@
         }
 
         .history-card {
-            background: linear-gradient(145deg, var(--surface-light), var(--surface));
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            padding: 1.75rem;
+            background: linear-gradient(145deg, #1F2937, #1A1B1E);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 1rem;
-            transition: all 0.3s ease;
+            padding: 1.5rem;
         }
 
         .history-card:hover {
@@ -318,12 +318,35 @@
         .bg-gray-50 {
             background-color: var(--background) !important;
         }
+
+        /* Table styles optimization */
+        .w-full thead th {
+            background-color: var(--table-header-bg);
+            color: var(--text-primary);
+            font-weight: 600;
+            padding: 1rem;
+        }
+
+        .w-full tbody tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background-color 0.2s ease;
+        }
+
+        .w-full tbody tr:hover {
+            background-color: var(--table-row-hover);
+        }
+
+        .w-full tbody td {
+            color: var(--text-secondary);
+            padding: 1rem;
+            font-size: 0.95rem;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
     <div class="flex min-h-screen">
         <aside class="w-64 bg-white shadow-lg p-4 space-y-4">
-            <div class="text-2xl font-bold text-blue-600 mb-8">CanTech</div>
+            <div class="text-2xl font-bold text-brand mb-8">CanTech</div>
             <nav class="space-y-2">
                 <a href="{{ url_for('dashboard') }}" class="sidebar-link flex items-center space-x-3 p-3">
                     <i data-feather="home"></i>

@@ -1,0 +1,231 @@
+import './index.css';
+import { createIcons, Wallet, CreditCard, PieChart, Shield, ArrowRight, Menu, X, Clock, Banknote, ChartLineUp } from 'lucide';
+
+// Initialize Lucide icons
+createIcons();
+
+document.querySelector('#app').innerHTML = `
+  <div class="min-h-screen bg-[#121212] text-white">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-[#1a1a1a]/80 backdrop-blur-lg border-b border-white/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center">
+            <span class="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+              CanTech
+            </span>
+          </div>
+          
+          <div class="hidden md:block">
+            <div class="flex items-center space-x-4">
+              <a href="#features" class="text-gray-300 hover:text-white px-3 py-2">Features</a>
+              <a href="#how-it-works" class="text-gray-300 hover:text-white px-3 py-2">How it Works</a>
+              <a href="#pricing" class="text-gray-300 hover:text-white px-3 py-2">Pricing</a>
+              <button class="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg transition">
+                Login
+              </button>
+              <button class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg hover:opacity-90 transition">
+                Sign Up
+              </button>
+            </div>
+          </div>
+          
+          <div class="md:hidden">
+            <button
+              id="menuButton"
+              class="text-gray-300 hover:text-white"
+              aria-label="Toggle menu"
+            >
+              <i data-lucide="menu"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Mobile menu -->
+      <div id="mobileMenu" class="hidden md:hidden bg-[#1a1a1a] border-b border-white/10">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+          <a href="#features" class="text-gray-300 hover:text-white block px-3 py-2">Features</a>
+          <a href="#how-it-works" class="text-gray-300 hover:text-white block px-3 py-2">How it Works</a>
+          <a href="#pricing" class="text-gray-300 hover:text-white block px-3 py-2">Pricing</a>
+          <button class="w-full text-left text-gray-300 hover:text-white px-3 py-2">Login</button>
+          <button class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-2 rounded-lg">
+            Sign Up
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center">
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent mb-6">
+            Smart Payments for Modern Campus Life
+          </h1>
+          <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
+            Experience hassle-free dining with our secure postpaid system. Track expenses, manage budgets, and enjoy campus meals without carrying cash.
+          </p>
+          <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <button class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-lg hover:opacity-90 transition flex items-center justify-center">
+              Get Started <i data-lucide="arrow-right" class="ml-2"></i>
+            </button>
+            <button class="bg-white/10 text-white px-8 py-4 rounded-lg hover:bg-white/20 transition">
+              Learn More
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-20 bg-[#1a1a1a]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <div class="p-6">
+            <p class="text-4xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">10,000+</p>
+            <p class="text-gray-400 mt-2">Active Students</p>
+          </div>
+          <div class="p-6">
+            <p class="text-4xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">50+</p>
+            <p class="text-gray-400 mt-2">Partner Institutions</p>
+          </div>
+          <div class="p-6">
+            <p class="text-4xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">1M+</p>
+            <p class="text-gray-400 mt-2">Transactions Processed</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-12">Smart Features for Modern Campus Life</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="bg-[#1a1a1a] p-6 rounded-lg border border-white/10">
+            <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4">
+              <i data-lucide="wallet" class="text-purple-500"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Postpaid System</h3>
+            <p class="text-gray-400">Pay for your meals at the end of the month with our convenient postpaid system.</p>
+          </div>
+          <div class="bg-[#1a1a1a] p-6 rounded-lg border border-white/10">
+            <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4">
+              <i data-lucide="pie-chart" class="text-purple-500"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Expense Tracking</h3>
+            <p class="text-gray-400">Monitor your spending patterns with detailed analytics and insights.</p>
+          </div>
+          <div class="bg-[#1a1a1a] p-6 rounded-lg border border-white/10">
+            <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4">
+              <i data-lucide="shield" class="text-purple-500"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Secure Payments</h3>
+            <p class="text-gray-400">Advanced encryption and secure payment processing for peace of mind.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20 bg-[#1a1a1a] px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-12">How It Works</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div class="text-center">
+            <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i data-lucide="credit-card" class="text-purple-500"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Sign Up</h3>
+            <p class="text-gray-400">Create your account with your student ID</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i data-lucide="banknote" class="text-purple-500"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Order & Eat</h3>
+            <p class="text-gray-400">Use your account to order meals</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i data-lucide="chart-line-up" class="text-purple-500"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Track Expenses</h3>
+            <p class="text-gray-400">Monitor your spending in real-time</p>
+          </div>
+          <div class="text-center">
+            <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i data-lucide="clock" class="text-purple-500"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Pay Monthly</h3>
+            <p class="text-gray-400">Clear your balance at month end</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-6">Ready to Transform Your Campus Dining Experience?</h2>
+        <p class="text-gray-400 mb-8">Join thousands of students who have already made the switch to smart payments.</p>
+        <button class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-lg hover:opacity-90 transition">
+          Get Started Now
+        </button>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#1a1a1a] border-t border-white/10 py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <span class="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+              CanTech
+            </span>
+            <p class="text-gray-400 mt-2">Smart payments for modern campus life.</p>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold mb-4">Product</h3>
+            <ul class="space-y-2">
+              <li><a href="#features" class="text-gray-400 hover:text-white">Features</a></li>
+              <li><a href="#pricing" class="text-gray-400 hover:text-white">Pricing</a></li>
+              <li><a href="#how-it-works" class="text-gray-400 hover:text-white">How it Works</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold mb-4">Company</h3>
+            <ul class="space-y-2">
+              <li><a href="#about" class="text-gray-400 hover:text-white">About</a></li>
+              <li><a href="#careers" class="text-gray-400 hover:text-white">Careers</a></li>
+              <li><a href="#contact" class="text-gray-400 hover:text-white">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold mb-4">Legal</h3>
+            <ul class="space-y-2">
+              <li><a href="#privacy" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+              <li><a href="#terms" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-8 pt-8 border-t border-white/10 text-center text-gray-400">
+          <p>&copy; ${new Date().getFullYear()} CanTech. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+`;
+
+// Mobile menu toggle functionality
+const menuButton = document.querySelector('#menuButton');
+const mobileMenu = document.querySelector('#mobileMenu');
+let isMenuOpen = false;
+
+menuButton.addEventListener('click', () => {
+  isMenuOpen = !isMenuOpen;
+  mobileMenu.classList.toggle('hidden');
+  menuButton.innerHTML = isMenuOpen ? '<i data-lucide="x"></i>' : '<i data-lucide="menu"></i>';
+  createIcons(); // Refresh icons after DOM update
+});

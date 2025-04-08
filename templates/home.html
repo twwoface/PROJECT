@@ -1,169 +1,240 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cantech - Digital Canteen Experience</title>
-    <link rel="stylesheet" href="./static/home.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>CanTech - Smart Canteen Payment System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+    <style>
+        :root {
+            --primary: #7C3AED;
+            --primary-light: #A78BFA;
+            --surface: #1A1B1E;
+            --surface-light: #2A2B2F;
+            --background: #111112;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A1A1AA;
+            --accent: #F43F5E;
+            --success: #10B981;
+            --warning: #FBBF24;
+            --gradient: linear-gradient(135deg, #7C3AED, #F43F5E);
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h1, h2, h3, .brand-text {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-light);
+            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.2);
+        }
+
+        .cta-button {
+            background: var(--gradient);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+        }
+
+        .step-card {
+            background: linear-gradient(145deg, var(--surface-light), var(--surface));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
 </head>
 <body>
-    <!-- Header Section -->
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <h1>Cantech</h1>
-            </div>
-            <nav class="navbar">
-                <ul>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#how-it-works">How It Works</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-            <div class="auth-buttons">
-                <a href="{{ url_for('login') }}" class="btn-login">Login</a>
-                <a href="{{ url_for('signup') }}" class="btn-signup">Sign Up</a>
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-opacity-90 backdrop-filter backdrop-blur-lg bg-gray-900 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold gradient-text">CanTech</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="{{ url_for('login') }}" class="text-gray-300 hover:text-white px-4 py-2 rounded-lg transition-all duration-300">Login</a>
+                    <a href="{{ url_for('signup') }}" class="cta-button px-4 py-2 rounded-lg">Sign Up</a>
+                </div>
             </div>
         </div>
-    </header>
+    </nav>
 
     <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Revolutionize Your Canteen Experience</h1>
-                <p>Track, manage, and optimize your canteen expenses with Cantech. Go cashless, stay in control, and enjoy a seamless digital experience.</p>
-                <a href="{{ url_for('login') }}" class="btn-get-started">Get Started</a>
-            </div>
-            <div class="hero-image">
-                <img src="cantech-hero.png" alt="Cantech App Preview">
+    <section class="pt-32 pb-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-5xl font-bold mb-6">Smart Payments for Modern Campus Life</h1>
+                    <p class="text-xl text-gray-400 mb-8">Experience hassle-free canteen payments with CanTech. Track expenses, manage budgets, and enjoy cashless transactions - all in one place.</p>
+                    <div class="flex space-x-4">
+                        <a href="{{ url_for('signup') }}" class="cta-button px-8 py-4 rounded-xl text-lg font-semibold">Get Started</a>
+                        <a href="#features" class="px-8 py-4 rounded-xl text-lg font-semibold border border-gray-700 hover:border-primary-light transition-all duration-300">Learn More</a>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-3xl opacity-10 blur-3xl"></div>
+                    <img src="https://placehold.co/600x400" alt="CanTech Dashboard Preview" class="relative rounded-3xl shadow-2xl">
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section id="features" class="features">
-        <div class="container">
-            <h2>Why Choose Cantech?</h2>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <i class="fas fa-chart-line fa-3x"></i>
-                    <h3>Track Expenses</h3>
-                    <p>Monitor your canteen and stationary purchases in real-time with detailed breakdowns.</p>
+    <section id="features" class="py-20 px-4 bg-gray-900">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Why Choose CanTech?</h2>
+                <p class="text-xl text-gray-400">Simplify your campus dining experience with our smart features</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="feature-card p-8 rounded-2xl">
+                    <div class="w-12 h-12 bg-purple-500 bg-opacity-20 rounded-xl flex items-center justify-center mb-6">
+                        <i data-feather="credit-card" class="text-purple-400"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Postpaid System</h3>
+                    <p class="text-gray-400">Pay for your meals at the end of the month. No more daily cash hassles.</p>
                 </div>
-                <div class="feature-card">
-                    <i class="fas fa-bell fa-3x"></i>
-                    <h3>Budget Alerts</h3>
-                    <p>Get notified when you're nearing or exceeding your monthly budget.</p>
+                <div class="feature-card p-8 rounded-2xl">
+                    <div class="w-12 h-12 bg-pink-500 bg-opacity-20 rounded-xl flex items-center justify-center mb-6">
+                        <i data-feather="pie-chart" class="text-pink-400"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Expense Tracking</h3>
+                    <p class="text-gray-400">Monitor your spending with detailed analytics and category-wise breakdowns.</p>
                 </div>
-                <div class="feature-card">
-                    <i class="fas fa-credit-card fa-3x"></i>
-                    <h3>Cashless Payments</h3>
-                    <p>Enjoy a prepaid system and pay your dues at the end of the month.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-chart-pie fa-3x"></i>
-                    <h3>Expense Analytics</h3>
-                    <p>Gain insights into your spending habits with easy-to-read charts and reports.</p>
+                <div class="feature-card p-8 rounded-2xl">
+                    <div class="w-12 h-12 bg-purple-500 bg-opacity-20 rounded-xl flex items-center justify-center mb-6">
+                        <i data-feather="bell" class="text-purple-400"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Smart Alerts</h3>
+                    <p class="text-gray-400">Get notified about your spending limits and payment reminders.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- How It Works Section -->
-    <section id="how-it-works" class="how-it-works">
-        <div class="container">
-            <h2>How It Works</h2>
-            <div class="steps">
-                <div class="step">
-                    <span>1</span>
-                    <h3>Sign Up</h3>
-                    <p>Create your Cantech account and link it to your college canteen.</p>
+    <!-- How It Works -->
+    <section class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">How It Works</h2>
+                <p class="text-xl text-gray-400">Get started with CanTech in four simple steps</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="step-card p-8 rounded-2xl text-center">
+                    <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-xl font-bold">1</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Sign Up</h3>
+                    <p class="text-gray-400">Create your account with your student credentials</p>
                 </div>
-                <div class="step">
-                    <span>2</span>
-                    <h3>Start Purchasing</h3>
-                    <p>Buy food, snacks, and stationary items without worrying about instant payments.</p>
+                <div class="step-card p-8 rounded-2xl text-center">
+                    <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-xl font-bold">2</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Start Purchasing</h3>
+                    <p class="text-gray-400">Buy food, snacks, and stationary items without worrying about instant payments.</p>
                 </div>
-                <div class="step">
-                    <span>3</span>
-                    <h3>Track & Manage</h3>
-                    <p>Use the Cantech dashboard to monitor your expenses and set budgets.</p>
+                <div class="step-card p-8 rounded-2xl text-center">
+                    <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-xl font-bold">3</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Track & Manage</h3>
+                    <p class="text-gray-400">Use the Cantech dashboard to monitor your expenses and set budgets.</p>
                 </div>
-                <div class="step">
-                    <span>4</span>
-                    <h3>Pay Monthly</h3>
-                    <p>Clear your dues at the end of the month with a single payment.</p>
+                <div class="step-card p-8 rounded-2xl text-center">
+                    <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-xl font-bold">4</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Pay Monthly</h3>
+                    <p class="text-gray-400">Clear your dues at the end of the month with a single payment.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="testimonials">
-        <div class="container">
-            <h2>What Students Are Saying</h2>
-            <div class="testimonial-grid">
-                <div class="testimonial-card">
-                    <p>"Cantech has made my life so much easier! I no longer worry about carrying cash, and the expense tracking is super helpful."</p>
-                    <h4>- Priya, College Student</h4>
+    <!-- Statistics Section -->
+    <section class="py-20 px-4 bg-gray-900">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <h3 class="text-4xl font-bold gradient-text mb-2">5000+</h3>
+                    <p class="text-gray-400">Active Students</p>
                 </div>
-                <div class="testimonial-card">
-                    <p>"The budget alerts are a game-changer. I’ve saved so much money since I started using Cantech!"</p>
-                    <h4>- Rohan, College Student</h4>
+                <div class="text-center">
+                    <h3 class="text-4xl font-bold gradient-text mb-2">₹1M+</h3>
+                    <p class="text-gray-400">Monthly Transactions</p>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-4xl font-bold gradient-text mb-2">99.9%</h3>
+                    <p class="text-gray-400">System Uptime</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2>Get In Touch</h2>
-            <p>Have questions or need support? Reach out to us!</p>
-            <form class="contact-form">
-                <input type="text" placeholder="Your Name" required>
-                <input type="email" placeholder="Your Email" required>
-                <textarea placeholder="Your Message" required></textarea>
-                <button type="submit" class="btn-submit">Send Message</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- Footer Section -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2023 Cantech. All rights reserved.</p>
-            <div class="social-links">
-                <a href="#">Facebook</a>
-                <a href="#">Twitter</a>
-                <a href="#">Instagram</a>
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold gradient-text mb-4">CanTech</h3>
+                    <p class="text-gray-400">Making campus dining smarter</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Product</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="text-gray-400 hover:text-white transition-colors">Features</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Security</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">About</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Legal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-800 text-center text-gray-400">
+                <p>&copy; 2024 CanTech. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- JavaScript -->
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const loginButton = document.querySelector(".btn-login");
-            const signUpButton = document.querySelector(".btn-signup");
-
-            if (loginButton) {
-                loginButton.addEventListener("click", function (event) {
-                    event.preventDefault();
-                    window.location.href = "{{ url_for('login') }}";
-                });
-            }
-
-            if (signUpButton) {
-                signUpButton.addEventListener("click", function (event) {
-                    event.preventDefault();
-                    window.location.href = "{{ url_for('signup') }}";
-                });
-            }
-        });
+        feather.replace();
     </script>
 </body>
 </html>
