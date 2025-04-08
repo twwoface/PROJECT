@@ -168,6 +168,23 @@
         /* Text colors */
         .text-brand { color: var(--primary-light); }
         .text-accent { color: var(--accent); }
+
+        .welcome-text {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, var(--primary) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            font-weight: 600;
+            display: inline-block;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -208,7 +225,7 @@
                 <div>
                     <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
                     {% if user_name %}
-                    <p class="text-gray-600 mt-1">Welcome back, <span class="font-semibold text-blue-600">{{ user_name }}</span>!</p>
+                    <p class="text-gray-600 mt-2">Welcome back, <span class="gradient-text">{{ user_name }}</span>!</p>
                     {% endif %}
                 </div>
                 <div class="flex items-center space-x-4">
