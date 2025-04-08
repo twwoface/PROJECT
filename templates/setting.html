@@ -1,119 +1,267 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - CanTech</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #7C3AED;
+            --primary-light: #A78BFA;
+            --surface: #1A1B1E;
+            --surface-light: #2A2B2F;
+            --background: #111112;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A1A1AA;
+            --accent: #F43F5E;
+            --gradient: linear-gradient(135deg, #7C3AED, #F43F5E);
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        .brand-text {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .sidebar-link {
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.25rem;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-link:hover {
+            background: var(--surface-light);
+            color: var(--primary-light);
+            border-left-color: var(--primary-light);
+        }
+
+        .sidebar-link.active {
+            background: rgba(124, 58, 237, 0.15);
+            color: var(--primary-light);
+            border-left-color: var(--primary-light);
+        }
+
+        .sidebar-link i {
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+
+        .sidebar-link:hover i,
+        .sidebar-link.active i {
+            color: var(--primary-light);
+        }
+
+        aside,
+        header,
+        .transaction-item {
+            background-color: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .text-gray-800 {
+            color: var(--text-primary) !important;
+        }
+
+        .text-gray-600 {
+            color: var(--text-secondary) !important;
+        }
+
+        .bg-white {
+            background-color: var(--surface) !important;
+        }
+
+        .bg-gray-50 {
+            background-color: var(--background) !important;
+        }
+
+        .border-gray-100 {
+            border-color: rgba(75, 85, 99, 0.2) !important;
+        }
+
+        .transaction-item:hover {
+            background: var(--surface-light);
+            border-left: 3px solid var(--primary);
+        }
+
+        /* Progress bars */
+        .progress-bg {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-primary {
+            background: var(--gradient);
+        }
+
+        .progress-success {
+            background: var(--success);
+        }
+
+        .progress-warning {
+            background: var(--warning);
+        }
+
+        /* Text colors */
+        .text-brand {
+            color: var(--primary-light);
+        }
+
+        .text-accent {
+            color: var(--accent);
+        }
+
         .form-section {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            border-radius: 1rem;
         }
 
-        .form-section h3 {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #1f2937;
-            margin-bottom: 15px;
+        .form-section>div {
+            margin-bottom: 1.5rem; /* Added spacing between form elements */
         }
 
-        .form-section label {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #4b5563;
-            display: block;
-            margin-bottom: 5px;
+        input[type="number"] {
+            background: var(--surface-light);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
         }
 
-        .form-section input[type="number"],
-        .form-section select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #d1d5db;
-            border-radius: 5px;
-            font-size: 0.875rem;
-            color: #374151;
-            margin-bottom: 15px;
+        input[type="number"]:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
         }
 
-        .form-section input[type="number"]:focus,
-        .form-section select:focus {
-            outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+        label {
+            color: var(--text-secondary);
+            font-weight: 500;
         }
 
-        .form-section button {
-            background-color: #2563eb;
-            color: #ffffff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+        .settings-btn {
+            background: var(--gradient);
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
-        .form-section button:hover {
-            background-color: #1d4ed8;
+        .settings-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
         }
 
         .error-message {
-            color: #dc2626;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-            display: none;
+            color: var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .error-message.show {
-            display: block;
+            opacity: 1;
+        }
+
+        /* Settings specific styles */
+        .form-section {
+            max-width: 500px; /* Limit the maximum width of the form */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-group {
+            margin-bottom: 2rem; /* Increased spacing between form groups */
+        }
+
+        .form-group label {
+            margin-bottom: 0.75rem; /* Increased spacing between label and input */
+        }
+
+        input[type="number"] {
+            width: 100%; /* Make the input boxes take the full width of their container */
+            padding: 1rem; /* Increased padding inside input boxes */
+            font-size: 1rem; /* Increased font size inside input boxes */
+        }
+
+        input[type="number"]:focus {
+            /* ...existing code... */
+        }
+
+        .settings-btn {
+            width: 100%; /* Make the button take the full width of its container */
+            padding: 1.1rem 1.75rem; /* Increased padding for the button */
+            font-size: 1.1rem; /* Increased font size for the button */
+        }
+
+        .settings-btn:hover {
+            /* ...existing code... */
+        }
+
+        .error-message {
+            /* ...existing code... */
+        }
+
+        .error-message.show {
+            /* ...existing code... */
         }
     </style>
 </head>
 <body class="bg-gray-50">
     <div class="flex min-h-screen">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-white shadow-lg p-4 space-y-4">
-            <div class="text-2xl font-bold text-blue-600 mb-8">CanTech</div>
-            <nav class="space-y-2">
-                <a href="{{ url_for('dashboard') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+        <!-- Sidebar with updated styling -->
+        <aside class="w-64 bg-white shadow-lg p-6 space-y-6">
+            <div class="text-2xl font-bold text-blue-600">CanTech</div>
+            <nav class="space-y-1">
+                <a href="{{ url_for('dashboard') }}" class="sidebar-link flex items-center space-x-3 p-3">
                     <i data-feather="home"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="{{ url_for('payments') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                <a href="{{ url_for('payments') }}" class="sidebar-link flex items-center space-x-3 p-3">
                     <i data-feather="credit-card"></i>
                     <span>Payments</span>
                 </a>
-                <a href="{{ url_for('history') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                <a href="{{ url_for('history') }}" class="sidebar-link flex items-center space-x-3 p-3">
                     <i data-feather="clock"></i>
                     <span>History</span>
                 </a>
                 {% if current_user.is_authenticated and current_user.email == 'admin' %}
-                <a href="{{ url_for('admin_panel') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                <a href="{{ url_for('admin_panel') }}" class="sidebar-link flex items-center space-x-3 p-3">
                     <i data-feather="shopping-cart"></i>
                     <span>Admin Panel</span>
                 </a>
                 {% endif %}
-                <a href="{{ url_for('settings') }}" class="flex items-center space-x-3 bg-blue-100 text-blue-600 p-3 rounded-lg">
+                <a href="{{ url_for('settings') }}" class="sidebar-link active flex items-center space-x-3 p-3">
                     <i data-feather="settings"></i>
                     <span>Settings</span>
-                </a>
-                <a href="{{ url_for('logout') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100 mt-auto">
-                    <i data-feather="log-out"></i>
-                    <span>Logout</span>
                 </a>
             </nav>
         </aside>
 
         <!-- Main Content -->
         <main class="flex-1 p-8">
-            <header class="mb-8">
-                <h1 class="text-2xl font-bold text-gray-800">Settings</h1>
+            <!-- Header with welcome message -->
+            <header class="flex justify-between items-center mb-8 bg-white p-6 rounded-xl shadow-sm">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800">Settings</h1>
+                </div>
             </header>
 
             <!-- Settings Form -->
@@ -121,19 +269,19 @@
                 <h3>Customize Your Budget</h3>
                 <form method="POST" action="{{ url_for('settings') }}" id="budgetForm">
                     <!-- Total Budget -->
-                    <div>
+                    <div class="form-group">
                         <label for="total_budget">Total Budget (₹)</label>
                         <input type="number" id="total_budget" name="limit" min="1000" max="10000" value="{{ total_budget }}" required>
                     </div>
 
                     <!-- Food Budget -->
-                    <div>
+                    <div class="form-group">
                         <label for="food_budget">Food Budget (₹)</label>
                         <input type="number" id="food_budget" name="food_limit" min="500" max="{{ total_budget }}" value="{{ food_budget }}" required>
                     </div>
 
                     <!-- Stationery Budget -->
-                    <div>
+                    <div class="form-group">
                         <label for="stationery_budget">Stationery Budget (₹)</label>
                         <input type="number" id="stationery_budget" name="stationery_limit" min="500" max="{{ total_budget }}" value="{{ stationery_budget }}" required>
                     </div>
@@ -145,7 +293,7 @@
 
                     <!-- Save Button -->
                     <div>
-                        <button type="submit">Save Changes</button>
+                        <button type="submit" class="settings-btn w-full">Save Changes</button>
                     </div>
                 </form>
             </div>

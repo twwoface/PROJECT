@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,25 +7,288 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7C3AED;           
+            --primary-light: #A78BFA;     
+            --surface: #1A1B1E;           
+            --surface-light: #2A2B2F;     
+            --background: #111112;         
+            --text-primary: #FFFFFF;       
+            --text-secondary: #A1A1AA;     
+            --accent: #F43F5E;            
+            --success: #10B981;           
+            --warning: #FBBF24;           
+            --gradient: linear-gradient(135deg, #7C3AED, #F43F5E);
+        }
+
+        /* Copy all base styles from dashboard.html */
+        body {
+            background-color: var(--background);
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        .brand-text {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .sidebar-link {
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.25rem;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-link:hover {
+            background: var(--surface-light);
+            color: var(--primary-light);
+            border-left-color: var(--primary-light);
+        }
+
+        .sidebar-link.active {
+            background: rgba(124, 58, 237, 0.15);
+            color: var(--primary-light);
+            border-left-color: var(--primary-light);
+        }
+
+        .sidebar-link i {
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+
+        .sidebar-link:hover i,
+        .sidebar-link.active i {
+            color: var(--primary-light);
+        }
+
+        aside,
+        header,
+        .transaction-item {
+            background-color: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .text-gray-800 {
+            color: var(--text-primary) !important;
+        }
+
+        .text-gray-600 {
+            color: var(--text-secondary) !important;
+        }
+
+        .bg-white {
+            background-color: var(--surface) !important;
+        }
+
+        .bg-gray-50 {
+            background-color: var(--background) !important;
+        }
+
+        .border-gray-100 {
+            border-color: rgba(75, 85, 99, 0.2) !important;
+        }
+
+        .transaction-item:hover {
+            background: var(--surface-light);
+            border-left: 3px solid var(--primary);
+        }
+
+        /* Progress bars */
+        .progress-bg {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-primary {
+            background: var(--gradient);
+        }
+
+        .progress-success {
+            background: var(--success);
+        }
+
+        .progress-warning {
+            background: var(--warning);
+        }
+
+        /* Text colors */
+        .text-brand {
+            color: var(--primary-light);
+        }
+
+        .text-accent {
+            color: var(--accent);
+        }
+
+        .history-card {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+            border-radius: 1rem;
+        }
+
+        .history-card:hover {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            border-color: var(--primary-light);
+        }
+
+        .chart-container {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            height: 400px;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th,
+        td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background-color: var(--surface-light);
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        tbody {
+            color: var(--text-secondary);
+        }
+
+        .btn-export {
+            background: var(--gradient);
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-export:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+        }
+
+        /* General Card Styles */
+        .card {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+            border-radius: 1rem;
+        }
+
+        .card:hover {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        /* Chart Container Styles */
+        .chart-container {
+            height: 400px;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background-color: var(--surface-light);
+            color: var(--text-primary);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        tbody {
+            color: var(--text-secondary);
+        }
+
+        /* Export Button Styles */
+        .btn-export {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-export:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+        }
+
+        /* Overwrite Tailwind classes */
+        .text-gray-800 {
+            color: var(--text-primary) !important;
+        }
+
+        .text-gray-600 {
+            color: var(--text-secondary) !important;
+        }
+
+        .bg-white {
+            background-color: var(--surface) !important;
+        }
+
+        .bg-gray-50 {
+            background-color: var(--background) !important;
+        }
+    </style>
 </head>
 <body class="bg-gray-50">
     <div class="flex min-h-screen">
-        <aside class="w-64 bg-white shadow-lg p-4 space-y-4">
-            <div class="text-2xl font-bold text-blue-600 mb-8">CanTech</div>
-            <nav class="space-y-2">
-                <a href="{{ url_for('dashboard') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+        <aside class="w-64 bg-white shadow-lg p-6 space-y-6">
+            <div class="text-2xl font-bold text-blue-600">CanTech</div>
+            <nav class="space-y-1">
+                <a href="{{ url_for('dashboard') }}" class="sidebar-link flex items-center space-x-3 p-3">
                     <i data-feather="home"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="{{ url_for('payments') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                <a href="{{ url_for('payments') }}" class="sidebar-link flex items-center space-x-3 p-3">
                     <i data-feather="credit-card"></i>
                     <span>Payments</span>
                 </a>
-                <a href="{{ url_for('history') }}" class="flex items-center space-x-3 bg-blue-100 text-blue-600 p-3 rounded-lg">
+                <a href="{{ url_for('history') }}" class="sidebar-link active flex items-center space-x-3 p-3">
                     <i data-feather="clock"></i>
                     <span>History</span>
                 </a>
-                <a href="{{ url_for('settings') }}" class="flex items-center space-x-3 text-gray-600 p-3 rounded-lg hover:bg-gray-100">
+                <a href="{{ url_for('settings') }}" class="sidebar-link flex items-center space-x-3 p-3">
                     <i data-feather="settings"></i>
                     <span>Settings</span>
                 </a>
@@ -33,54 +296,56 @@
         </aside>
 
         <main class="flex-1 p-8">
-            <div class="bg-white rounded-xl shadow-md p-6 mb-8">
-                <div class="flex justify-between items-center mb-6">
+            <header class="flex justify-between items-center mb-8 bg-white p-6 rounded-xl shadow-sm">
+                <div>
                     <h1 class="text-2xl font-bold text-gray-800">Transaction History</h1>
-                    <button class="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                        <i data-feather="download"></i>
-                        <span>Export</span>
-                    </button>
                 </div>
-            </div>
+            </header>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div class="bg-white rounded-xl shadow-md p-6">
-                    <h2 class="text-lg font-semibold mb-4">Monthly Spending Trend</h2>
-                    <div class="relative w-full h-64">
+                <div class="history-card">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Monthly Spending Trend</h3>
+                    <div class="chart-container">
                         <canvas id="trendChart"></canvas>
                     </div>
                 </div>
-                <div class="bg-white rounded-xl shadow-md p-6">
-                    <h2 class="text-lg font-semibold mb-4">Category Distribution</h2>
-                    <div class="relative w-full h-64">
+                <div class="history-card">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Category Distribution</h3>
+                    <div class="chart-container">
                         <canvas id="categoryChart"></canvas>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <h2 class="text-lg font-semibold mb-6">Recent Transactions</h2>
+            <div class="history-card">
+                <div class="flex justify-between items-center p-6 border-b">
+                    <h3 class="text-lg font-semibold text-gray-800">Recent Transactions</h3>
+                    <button class="btn-export flex items-center space-x-2">
+                        <i data-feather="download" class="h-5 w-5"></i>
+                        <span>Export</span>
+                    </button>
+                </div>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
+                    <table class="w-full">
                         <thead>
                             <tr>
-                                <th class="p-3 bg-gray-200">Item Name</th>
-                                <th class="p-3 bg-gray-200">Quantity</th>
-                                <th class="p-3 bg-gray-200">Price</th>
-                                <th class="p-3 bg-gray-200">Total</th>
-                                <th class="p-3 bg-gray-200">Category</th>
-                                <th class="p-3 bg-gray-200">Timestamp</th>
+                                <th class="text-left py-3 px-4 font-semibold text-gray-600">Item Name</th>
+                                <th class="text-left py-3 px-4 font-semibold text-gray-600">Quantity</th>
+                                <th class="text-left py-3 px-4 font-semibold text-gray-600">Price</th>
+                                <th class="text-left py-3 px-4 font-semibold text-gray-600">Total</th>
+                                <th class="text-left py-3 px-4 font-semibold text-gray-600">Category</th>
+                                <th class="text-left py-3 px-4 font-semibold text-gray-600">Timestamp</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for transaction in transactions %}
-                            <tr class="border-b">
-                                <td class="p-3">{{ transaction[0] }}</td>
-                                <td class="p-3">{{ transaction[1] }}</td>
-                                <td class="p-3">₹{{ transaction[2] }}</td>
-                                <td class="p-3">₹{{ transaction[3] }}</td>
-                                <td class="p-3">{{ transaction[4] }}</td>
-                                <td class="p-3">{{ transaction[5] | datetimeformat }}</td>
+                            <tr>
+                                <td class="py-4 px-4 text-gray-600">{{ transaction[0] }}</td>
+                                <td class="py-4 px-4 text-gray-600">{{ transaction[1] }}</td>
+                                <td class="py-4 px-4 text-gray-600">₹{{ transaction[2] }}</td>
+                                <td class="py-4 px-4 text-gray-600">₹{{ transaction[3] }}</td>
+                                <td class="py-4 px-4 text-gray-600">{{ transaction[4] }}</td>
+                                <td class="py-4 px-4 text-gray-600">{{ transaction[5] | datetimeformat }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -101,13 +366,31 @@
                 datasets: [{
                     label: 'Monthly Spending',
                     data: [1200, 950, 1100, 1300, 1150, 1250],
-                    borderColor: '#3B82F6',
-                    tension: 0.4
+                    borderColor: '#7C3AED',
+                    backgroundColor: 'rgba(124, 58, 237, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    borderWidth: 3
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#FFFFFF' }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        ticks: { color: '#FFFFFF' }
+                    },
+                    y: {
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        ticks: { color: '#FFFFFF' }
+                    }
+                }
             }
         });
 
@@ -118,12 +401,22 @@
                 labels: ['Food', 'Stationery', 'Snacks', 'Beverages'],
                 datasets: [{
                     data: [45, 25, 20, 10],
-                    backgroundColor: ['#3B82F6', '#8B5CF6', '#F59E0B', '#10B981']
+                    backgroundColor: [
+                        'rgba(124, 58, 237, 0.8)',
+                        'rgba(236, 72, 153, 0.8)',
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(16, 185, 129, 0.8)'
+                    ]
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#FFFFFF' }
+                    }
+                }
             }
         });
     </script>
