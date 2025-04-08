@@ -46,7 +46,7 @@
 
         .sidebar-link:hover {
             background: var(--surface-light);
-            color: var(--primary-light);
+            color: var (--primary-light);
             border-left-color: var(--primary-light);
         }
 
@@ -187,6 +187,13 @@
             margin-right: auto;
         }
 
+        .form-section h3 {
+            font-size: 1.75rem; /* Increased title size */
+            font-weight: bold;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+        }
+
         .form-group {
             margin-bottom: 2rem; /* Increased spacing between form groups */
         }
@@ -227,9 +234,9 @@
 <body class="bg-gray-50">
     <div class="flex min-h-screen">
         <!-- Sidebar with updated styling -->
-        <aside class="w-64 bg-white shadow-lg p-6 space-y-6">
-            <div class="text-2xl font-bold text-blue-600">CanTech</div>
-            <nav class="space-y-1">
+        <aside class="w-64 bg-white shadow-lg p-4 space-y-4">
+            <div class="text-2xl font-bold text-blue-600 mb-8">CanTech</div>
+            <nav class="space-y-2">
                 <a href="{{ url_for('dashboard') }}" class="sidebar-link flex items-center space-x-3 p-3">
                     <i data-feather="home"></i>
                     <span>Dashboard</span>

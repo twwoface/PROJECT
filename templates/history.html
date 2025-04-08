@@ -129,17 +129,29 @@
         }
 
         .history-card {
-            background: var(--surface);
+            background: linear-gradient(145deg, var(--surface-light), var(--surface));
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(20px);
-            transition: all 0.3s ease;
+            padding: 1.75rem;
             border-radius: 1rem;
+            transition: all 0.3s ease;
         }
 
         .history-card:hover {
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
             border-color: var(--primary-light);
+        }
+
+        .history-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            margin-bottom: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        .history-card .chart-container {
+            margin-top: 1.5rem;
         }
 
         .chart-container {
@@ -153,13 +165,16 @@
 
         table {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 1.5rem 0;
+            border-radius: 1rem;
+            overflow: hidden;
         }
 
         th,
         td {
-            padding: 0.75rem;
+            padding: 1.25rem 1.5rem;
             text-align: left;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -167,20 +182,73 @@
         th {
             background-color: var(--surface-light);
             color: var(--text-primary);
-            font-weight: 500;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
         }
 
-        tbody {
+        table th {
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 1.25rem 1rem;
             color: var(--text-secondary);
+            background: var(--surface-light);
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background-color: var(--surface-light);
+        }
+
+        tbody tr:hover {
+            background: var(--surface-light);
+        }
+
+        tbody td {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        table td {
+            font-size: 1rem;
+            padding: 1.25rem 1rem;
+            color: var(--text-primary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .btn-export {
             background: var(--gradient);
             color: var(--text-primary);
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
             cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-export {
+            background: var(--gradient);
+            color: var(--text-primary);
+            padding: 0.875rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            font-size: 1rem;
+            letter-spacing: 0.025em;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
         }
 
         .btn-export:hover {
@@ -195,7 +263,9 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(20px);
             transition: all 0.3s ease;
-            border-radius: 1rem;
+            border-radius: 1.25rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
         }
 
         .card:hover {
@@ -206,51 +276,30 @@
 
         /* Chart Container Styles */
         .chart-container {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.25rem;
             height: 400px;
-            padding: 1.5rem;
-            position: relative;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
-        /* Table Styles */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
+        /* Section Headers */
+        .section-header {
+            margin-bottom: 2rem;
         }
 
-        th,
-        td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        th {
-            background-color: var(--surface-light);
+        .section-header h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
             color: var(--text-primary);
-            font-weight: 500;
-            text-transform: uppercase;
-            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
         }
 
-        tbody {
+        .section-header p {
             color: var(--text-secondary);
-        }
-
-        /* Export Button Styles */
-        .btn-export {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: var(--text-primary);
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-        }
-
-        .btn-export:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+            font-size: 1.1rem;
         }
 
         /* Overwrite Tailwind classes */
@@ -273,9 +322,9 @@
 </head>
 <body class="bg-gray-50">
     <div class="flex min-h-screen">
-        <aside class="w-64 bg-white shadow-lg p-6 space-y-6">
-            <div class="text-2xl font-bold text-blue-600">CanTech</div>
-            <nav class="space-y-1">
+        <aside class="w-64 bg-white shadow-lg p-4 space-y-4">
+            <div class="text-2xl font-bold text-blue-600 mb-8">CanTech</div>
+            <nav class="space-y-2">
                 <a href="{{ url_for('dashboard') }}" class="sidebar-link flex items-center space-x-3 p-3">
                     <i data-feather="home"></i>
                     <span>Dashboard</span>
@@ -288,6 +337,12 @@
                     <i data-feather="clock"></i>
                     <span>History</span>
                 </a>
+                {% if current_user.is_authenticated and current_user.email == 'admin' %}
+                <a href="{{ url_for('admin_panel') }}" class="sidebar-link flex items-center space-x-3 p-3">
+                    <i data-feather="shopping-cart"></i>
+                    <span>Admin Panel</span>
+                </a>
+                {% endif %}
                 <a href="{{ url_for('settings') }}" class="sidebar-link flex items-center space-x-3 p-3">
                     <i data-feather="settings"></i>
                     <span>Settings</span>

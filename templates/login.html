@@ -1,35 +1,164 @@
-<!DOCTYPE html> 
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - CanTech</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+    <style>
+        :root {
+            --primary: #7C3AED;
+            --primary-light: #A78BFA;
+            --surface: #1A1B1E;
+            --surface-light: #2A2B2F;
+            --background: #111112;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A1A1AA;
+            --accent: #F43F5E;
+            --gradient: linear-gradient(135deg, #7C3AED, #F43F5E);
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border-radius: 1.5rem;
+            width: 100%;
+            max-width: 420px;
+            padding: 2.5rem;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+            text-align: center;
+            letter-spacing: -0.02em;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            background: var(--surface-light);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.875rem 1rem;
+            border-radius: 0.75rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+            outline: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: var(--gradient);
+            color: var(--text-primary);
+            border: none;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+        }
+
+        .toggle-text {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .toggle-text a {
+            color: var(--primary-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-text a:hover {
+            color: var(--accent);
+        }
+
+        .error-message {
+            color: var(--accent);
+            background: rgba(244, 63, 94, 0.1);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    </style>
 </head>
 <body>
-    <div class="wrapper">
-        <h1 class="cantech-title">CanTech</h1>
-        <div class="container">
-            <h2>Login</h2>
-            <form id="loginForm" action="{{ url_for('login') }}" method="post">
-                <div class="input-group">
-                    <label for="email">Gmail</label>
-                    <input type="text" id="email" name="email" required>
-                </div>
-                <div class="input-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <button type="submit">Login</button>
-                <p class="toggle-text">Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a></p>
-            </form>
+    <div class="login-container">
+        <h1 class="logo">CanTech</h1>
+        <form id="loginForm" action="{{ url_for('login') }}" method="post">
             {% if error %}
-                <p style="color: red;">{{ error }}</p>
+            <div class="error-message">
+                <i data-feather="alert-circle" class="w-4 h-4"></i>
+                <span>{{ error }}</span>
+            </div>
             {% endif %}
-        </div>
+            
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" required placeholder="Enter your email">
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password">
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+            <p class="toggle-text">Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a></p>
+        </form>
     </div>
 
     <script>
+        feather.replace();
+        
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             var emailInput = document.getElementById('email');
             if (emailInput.value !== 'admin' && !emailInput.value.includes('@')) {
