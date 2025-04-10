@@ -169,27 +169,30 @@
     <!-- Navigation -->
     <nav class="fixed w-full z-50 bg-opacity-90 backdrop-filter backdrop-blur-lg bg-gray-900 border-b border-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
+            <div class="flex justify-between h-16"> <!-- Reduced from h-20 to h-16 -->
                 <div class="flex items-center">
-                    <h1 class="text-2xl font-bold gradient-text">CanTech</h1>
+                        <h1 class="text-3xl font-bold gradient-text tracking-tight flex items-center">
+                        CanTech 
+                        <span class="text-sm text-gray-400 font-medium ml-2">Smart Campus Payments</span>
+                    </h1>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <a href="{{ url_for('login') }}" class="text-gray-300 hover:text-white px-4 py-2 rounded-lg transition-all duration-300">Login</a>
-                    <a href="{{ url_for('signup') }}" class="cta-button px-4 py-2 rounded-lg">Sign Up</a>
+                <div class="flex items-center space-x-4"> <!-- Reduced spacing from space-x-6 -->
+                    <a href="{{ url_for('login') }}" class="text-gray-300 hover:text-white px-4 py-2 text-base rounded-lg transition-all duration-300">Login</a> <!-- Adjusted padding and text size -->
+                    <a href="{{ url_for('signup') }}" class="bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-2 text-base rounded-lg hover:opacity-90 transition-all duration-300">Sign Up</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section with Animation -->
-    <section class="pt-32 pb-20 px-4 relative overflow-hidden">
+    <section class="pt-32 pb-20 px-4 relative overflow-hidden"> <!-- Reverted padding -->
         <div class="hero-gradient"></div>
         <div class="max-w-7xl mx-auto">
-            <div class="text-center max-w-3xl mx-auto">
-                <h1 class="hero-heading text-6xl font-bold mb-6">Smart Payments for Modern Campus Life</h1>
-                <p class="text-xl text-gray-400 mb-8">Transform your campus dining experience with our comprehensive payment and expense management system.</p>
-                <div class="flex justify-center space-x-4">
-                    <a href="{{ url_for('signup') }}" class="cta-button px-8 py-4 rounded-xl text-lg font-semibold">Get Started</a>
+            <div class="text-center max-w-3xl mx-auto"> <!-- Reverted max-width -->
+                <h1 class="hero-heading text-6xl font-bold mb-6">Smart Payments for Modern Campus Life</h1> <!-- Reverted text size and margin -->
+                <p class="text-xl text-gray-400 mb-8">Transform your campus dining experience with our comprehensive payment and expense management system.</p> <!-- Reverted margin -->
+                <div class="flex justify-center space-x-4"> <!-- Reverted spacing -->
+                    <a href="{{ url_for('signup') }}" class="cta-button px-8 py-4 rounded-xl text-lg font-semibold">Get Started</a> <!-- Reverted padding -->
                     <a href="#features" class="px-8 py-4 rounded-xl text-lg font-semibold border border-gray-700 hover:border-primary-light transition-all duration-300">Learn More</a>
                 </div>
             </div>
@@ -285,7 +288,7 @@
                     <p class="text-gray-400">Active Students</p>
                 </div>
                 <div class="text-center">
-                    <h3 class="stat-number">₹1M+</h3>
+                    <h3 class="stat-number">₹100K+</h3>
                     <p class="text-gray-400">Monthly Transactions</p>
                 </div>
                 <div class="text-center">
