@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details - CanTech</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7C3AED;
+            --primary-light: #A78BFA;
+            --surface: #1A1B1E;
+            --surface-light: #2A2B2F;
+            --background: #111112;
+            --text-primary: #E2E8F0;
+            --text-secondary: #CBD5E1;
+            --accent: #F43F5E;
+            --success: #10B981;
+            --warning: #FBBF24;
+            --gradient: linear-gradient(135deg, #7C3AED, #F43F5E);
+            --table-header-bg: #2D3748;
+            --table-row-hover: #2D3748;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h1, h2, h3, .brand-text {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .text-brand { color: var(--primary-light); }
+        .text-gray-800 { color: var(--text-primary) !important; }
+        .text-gray-600 { color: var(--text-secondary) !important; }
+        .text-gray-400 { color: var(--text-secondary) !important; }
+        .bg-white { background-color: var(--surface) !important; }
+        .bg-gray-50 { background-color: var(--background) !important; }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--primary-light);
+            box-shadow: 0 12px 40px rgba(124, 58, 237, 0.2);
+        }
+
+        .form-input {
+            background: var(--surface-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.15);
+            background: var(--surface);
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: var(--text-primary);
+            font-weight: 500;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+        }
+
+        .sidebar-link {
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 0.75rem;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-link:hover, .sidebar-link.active {
+            background: rgba(124, 58, 237, 0.15);
+            color: var(--primary-light);
+            border-left-color: var(--primary-light);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 1.5rem 0;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        th {
+            background-color: var(--table-header-bg);
+            color: var(--text-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+        }
+
+        td {
+            padding: 1.25rem 1.5rem;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: var(--table-row-hover);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg p-4 space-y-4">
+            <div class="text-2xl font-bold text-brand mb-8">CanTech</div>
+            <nav class="space-y-2">
+                <a href="{{ url_for('admin_panel') }}" class="sidebar-link flex items-center space-x-3 p-3">
+                    <i data-feather="shopping-cart"></i>
+                    <span>Admin Panel</span>
+                </a>
+                <a href="{{ url_for('recent_purchases') }}" class="sidebar-link flex items-center space-x-3 p-3">
+                    <i data-feather="list"></i>
+                    <span>Recent Purchases</span>
+                </a>
+                <a href="{{ url_for('student_details') }}" class="sidebar-link active flex items-center space-x-3 p-3">
+                    <i data-feather="user"></i>
+                    <span>Student Details</span>
+                </a>
+                <a href="{{ url_for('logout') }}" class="sidebar-link flex items-center space-x-3 p-3">
+                    <i data-feather="log-out"></i>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <header class="flex justify-between items-center mb-8 bg-white p-6 rounded-xl shadow-sm">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800">Student Details</h1>
+                    <p class="text-gray-600 mt-2">Search and view student information</p>
+                </div>
+            </header>
+
+            <!-- Search Form -->
+            <div class="card bg-white rounded-xl shadow-md p-6 mb-8">
+                <form method="POST" class="flex gap-4">
+                    <div class="flex-1">
+                        <input type="text" name="student_id" placeholder="Enter Student ID" required
+                               class="form-input w-full" />
+                    </div>
+                    <button type="submit" class="btn-primary px-6 py-3 rounded-lg">
+                        Search
+                    </button>
+                </form>
+            </div>
+
+            {% if student_data %}
+            <!-- Student Information -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="card bg-white p-6 rounded-xl">
+                    <h3 class="text-lg font-semibold mb-4">Student Information</h3>
+                    <div class="space-y-3">
+                        <p><span class="text-gray-400">Name:</span> {{ student_data.info[0] }}</p>
+                        <p><span class="text-gray-400">College:</span> {{ student_data.info[1] }}</p>
+                        <p><span class="text-gray-400">Student ID:</span> {{ student_data.info[2] }}</p>
+                    </div>
+                </div>
+                <div class="card bg-white p-6 rounded-xl">
+                    <h3 class="text-lg font-semibold mb-4">Budget Overview</h3>
+                    <div class="space-y-3">
+                        <p><span class="text-gray-400">Total Budget:</span> ₹{{ student_data.info[3] }}</p>
+                        <p><span class="text-gray-400">Food Budget:</span> ₹{{ student_data.info[4] }}</p>
+                        <p><span class="text-gray-400">Stationery Budget:</span> ₹{{ student_data.info[5] }}</p>
+                    </div>
+                </div>
+                <div class="card bg-white p-6 rounded-xl">
+                    <h3 class="text-lg font-semibold mb-4">Spending Summary</h3>
+                    <div class="space-y-3">
+                        <p><span class="text-gray-400">Total Spent:</span> ₹{{ student_data.total_spent }}</p>
+                        <p><span class="text-gray-400">Food Expenses:</span> ₹{{ student_data.food_spent }}</p>
+                        <p><span class="text-gray-400">Stationery Expenses:</span> ₹{{ student_data.stationery_spent }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Purchase History -->
+            <div class="card bg-white rounded-xl shadow-md p-6">
+                <h3 class="text-xl font-semibold mb-6">Purchase History</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                                <th>Category</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for purchase in student_data.purchases %}
+                            <tr>
+                                <td>{{ purchase[0] }}</td>
+                                <td>{{ purchase[1] }}</td>
+                                <td>₹{{ purchase[2] }}</td>
+                                <td>₹{{ purchase[3] }}</td>
+                                <td>{{ purchase[4] }}</td>
+                                <td>{{ purchase[5] | datetimeformat }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>

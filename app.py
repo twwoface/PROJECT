@@ -341,6 +341,73 @@ def recent_purchases():
                          purchases=purchases, 
                          edit_purchase=edit_purchase)
 
+@app.route('/delete_purchase/<int:purchase_id>')
+@login_required
+def delete_purchase(purchase_id):
+    if current_user.email != 'admin':
+        flash("Access denied.", "danger")
+        return redirect(url_for('login'))
+
+    with sqlite3.connect("users.db") as conn:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM purchases WHERE id = ?", (purchase_id,))
+        conn.commit()
+        flash("Purchase deleted successfully!", "success")
+    
+    return redirect(url_for('recent_purchases'))
+
+@app.route('/student_details', methods=['GET', 'POST'])
+@login_required
+def student_details():
+    if current_user.email != 'admin':
+        flash("Access denied.", "danger")
+        return redirect(url_for('login'))
+
+    student_data = None
+    if request.method == 'POST':
+        student_id = request.form.get('student_id')
+        with sqlite3.connect("users.db") as conn:
+            cursor = conn.cursor()
+            
+            # Get student details
+            cursor.execute("""
+                SELECT name, college, student_id, total_budget, food_budget, stationery_budget
+                FROM users WHERE student_id = ?
+            """, (student_id,))
+            student_info = cursor.fetchone()
+
+            if student_info:
+                # Get purchase history
+                cursor.execute("""
+                    SELECT item_name, quantity, price, total, category, timestamp
+                    FROM purchases 
+                    WHERE student_id = ?
+                    ORDER BY timestamp DESC
+                """, (student_id,))
+                purchases = cursor.fetchall()
+
+                # Calculate totals
+                cursor.execute("SELECT SUM(total) FROM purchases WHERE student_id = ?", (student_id,))
+                total_spent = cursor.fetchone()[0] or 0
+
+                cursor.execute("SELECT SUM(total) FROM purchases WHERE student_id = ? AND category = 'food'", (student_id,))
+                food_spent = cursor.fetchone()[0] or 0
+
+                cursor.execute("SELECT SUM(total) FROM purchases WHERE student_id = ? AND category = 'stationery'", (student_id,))
+                stationery_spent = cursor.fetchone()[0] or 0
+
+                student_data = {
+                    'info': student_info,
+                    'purchases': purchases,
+                    'total_spent': total_spent,
+                    'food_spent': food_spent,
+                    'stationery_spent': stationery_spent
+                }
+            else:
+                flash('Student not found.', 'error')
+
+    return render_template('student_details.html', student_data=student_data)
+
 @app.route('/profile')
 def profile():
     return render_template('profile.html')
