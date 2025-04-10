@@ -24,6 +24,31 @@
             --table-row-hover: #2D3748;
         }
 
+        body {
+            background-color: var(--background);
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h1, h2, h3, .brand-text {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        /* Text colors */
+        .text-brand { color: var(--primary-light); }
+        .text-accent { color: var(--accent); }
+
+        .gradient-text {
+            background: linear-gradient(to right, var(--primary) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            font-weight: 600;
+            display: inline-block;
+        }
+
         .table-container {
             background: var(--surface);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -44,9 +69,9 @@
         th {
             background-color: var(--table-header-bg);
             color: var(--text-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.875rem;
             font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.9rem;
             letter-spacing: 0.05em;
             padding: 1.25rem 1.5rem;
             text-align: left;
@@ -55,6 +80,8 @@
         td {
             padding: 1.25rem 1.5rem;
             color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 

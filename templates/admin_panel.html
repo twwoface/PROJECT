@@ -33,6 +33,25 @@
             letter-spacing: -0.02em;
         }
 
+        /* Text colors */
+        .text-brand { color: var(--primary-light); }
+        .text-accent { color: var(--accent); }
+
+        .gradient-text {
+            background: linear-gradient(to right, var(--primary) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .text-gray-800 { color: var(--text-primary) !important; }
+        .text-gray-600, .text-gray-700 { color: var(--text-secondary) !important; }
+        .bg-white { background-color: var(--surface) !important; }
+        .bg-gray-50 { background-color: var(--background) !important; }
+
         .hover-card {
             background: var(--surface);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -98,11 +117,6 @@
             border-color: var(--primary-light);
             transform: translateY(-2px);
         }
-
-        .text-gray-700, .text-gray-800 { color: var(--text-primary) !important; }
-        .text-gray-600 { color: var(--text-secondary) !important; }
-        .bg-white { background-color: var(--surface) !important; }
-        .bg-gray-50 { background-color: var(--background) !important; }
 
         .sidebar-link {
             color: var(--text-secondary);
